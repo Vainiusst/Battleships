@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Battleships.Business.Models
 {
-    public class Coordinate
+    public class Coordinate : IEquatable<Coordinate>
     {
         public int Column { get; set; }
         public int Row { get; set; }
@@ -15,6 +15,11 @@ namespace Battleships.Business.Models
         {
             Column = column;
             Row = row;
+        }
+
+        public bool Equals(Coordinate other)
+        {
+            return this.Column == other.Column && this.Row == other.Row;
         }
     }
 }

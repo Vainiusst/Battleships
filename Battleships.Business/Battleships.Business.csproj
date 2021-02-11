@@ -33,6 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -48,11 +49,13 @@
     <Compile Include="Models\GameGrid.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="Models\Ship.cs" />
+    <Compile Include="Models\ShipSizes.cs" />
     <Compile Include="Models\Square.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ShipGeneratorService.cs" />
+    <Compile Include="Services\ShipPlacementService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

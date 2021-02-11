@@ -9,10 +9,7 @@ namespace Battleships.Business.Services
 {
     public static class ShipGeneratorService
     {
-        //Default game has 5 ships in these sizes
-        private static int[] ShipSizes = { 5, 4, 3, 3, 2 };
-
-        public static IEnumerable<Ship> ShipGenerator()
+        public static IEnumerable<Ship> ShipGenerator(IEnumerable<int> ShipSizes)
         {
             List<Ship> ships = new List<Ship>();
 

@@ -17,7 +17,7 @@ namespace Battleships.Business.Models
         {
             PlayerGrid = new GameGrid();
             GuessGrid = new GameGrid();
-            Ships = ShipGeneratorService.ShipGenerator().ToList();
+            Ships = ShipGeneratorService.ShipGenerator(ShipSizes.DefaultSizes).ToList();
         }
     }
 }
