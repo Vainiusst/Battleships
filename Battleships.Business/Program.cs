@@ -20,30 +20,30 @@ namespace Battleships.Business
 
             ShipPlacementService sps = new ShipPlacementService(10, 10);
 
-            List<Coordinate> lctl = sps.PlaceShip(coordTL, "Vertical", ship).ToList();
-            List<Coordinate> lctr = sps.PlaceShip(coordTR, "Vertical", ship).ToList();
-            List<Coordinate> lcbl = sps.PlaceShip(coordBL, "Vertical", ship).ToList();
-            List<Coordinate> lcbr = sps.PlaceShip(coordBR, "Vertical", ship).ToList();
+            List<Coordinate> lctl = sps.PlaceShip("Vertical", coordTL, ship).ToList();
+            //List<Coordinate> lctr = sps.PlaceShip("Vertical", coordTR, ship).ToList();
+            //List<Coordinate> lcbl = sps.PlaceShip("Vertical", coordBL, ship).ToList();
+            //List<Coordinate> lcbr = sps.PlaceShip("Vertical", coordBR, ship).ToList();
 
             foreach (var item in lctl)
             {
                 Console.WriteLine($"{item.Column}, {item.Row}");
             }
             Console.WriteLine("-----------------");
-            foreach (var item in lctr)
-            {
-                Console.WriteLine($"{item.Column}, {item.Row}");
-            }
-            Console.WriteLine("-----------------");
-            foreach (var item in lcbl)
-            {
-                Console.WriteLine($"{item.Column}, {item.Row}");
-            }
-            Console.WriteLine("-----------------");
-            foreach (var item in lcbr)
-            {
-                Console.WriteLine($"{item.Column}, {item.Row}");
-            }
+            //foreach (var item in lctr)
+            //{
+            //    Console.WriteLine($"{item.Column}, {item.Row}");
+            //}
+            //Console.WriteLine("-----------------");
+            //foreach (var item in lcbl)
+            //{
+            //    Console.WriteLine($"{item.Column}, {item.Row}");
+            //}
+            //Console.WriteLine("-----------------");
+            //foreach (var item in lcbr)
+            //{
+            //    Console.WriteLine($"{item.Column}, {item.Row}");
+            //}
 
             Console.Read();
         }
