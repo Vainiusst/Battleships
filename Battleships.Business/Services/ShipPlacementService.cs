@@ -112,7 +112,7 @@ namespace Battleships.Business.Services
             else
             {
                 MessageBox.Show("This coordinate choice is invalid!");
-                Console.WriteLine("This coordinate choice is invalid!");
+                //Console.WriteLine("This coordinate choice is invalid!");
                 return returnCoords;
             }
         }

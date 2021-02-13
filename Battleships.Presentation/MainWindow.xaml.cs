@@ -26,18 +26,46 @@ namespace Battleships.Presentation
         {
             InitializeComponent();
             var p1 = new Player();
+            var pc = new Player();
             var sps = new ShipPlacementService(p1.Grid.Height, p1.Grid.Width);
+            var spsPC = new ShipPlacementService(pc.Grid.Height, pc.Grid.Width);
             var bfs = new ButtonFillingService();
             ShipOrientation = true;
 
-            ClickSomewhere = new TaskCompletionSource<Coordinate>();
-            ClickSomewhereTask = ClickSomewhere.Task;
+            SetComputerShips(pc, spsPC);
+
+            //ClickSomewhere = new TaskCompletionSource<Coordinate>();
+            //ClickSomewhereTask = ClickSomewhere.Task;
 
             
-            bfs.FillWithButtons(PlayerBoxGrid, p1.Grid, false, WaitingForMouseClick);
-            bfs.FillWithButtons(PlayerGuessBoxGrid, p1.GuessGrid, true, null);
+            //bfs.FillWithButtons(PlayerBoxGrid, p1.Grid, false, WaitingForMouseClick);
+            //bfs.FillWithButtons(PlayerGuessBoxGrid, p1.GuessGrid, true, null);
 
-            SetShips(p1, sps);
+            //SetShips(p1, sps);
+        }
+
+        private void SetComputerShips(Player p, ShipPlacementService sps)
+        {
+            while (p.Ships.Count > sps.OccupiedCoordinates.Count)
+            {
+                var theShip = p.Ships[sps.OccupiedCoordinates.Count];
+                sps.PlaceShipRandom(theShip);
+            }
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("The computer ships have been placed.");
+
+            foreach(Ship ship in p.Ships)
+            {
+                sb.AppendLine("Coordinates:");
+                foreach(Coordinate coord in ship.Placement)
+                {
+                    sb.Append($"{coord.Column};{coord.Row} ");
+                }
+                sb.AppendLine();
+            }
+            
+            MessageBox.Show(sb.ToString());
         }
 
         private string OrientationSetter(bool shipOrient)
