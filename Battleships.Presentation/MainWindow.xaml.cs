@@ -26,7 +26,7 @@ namespace Battleships.Presentation
             InitializeComponent();
         }
 
-        private void FillWithButtons(Grid grid)
+        private void FillWithButtons(Grid grid, double buttonOpacity)
         {
             int x = 10;
             int y = 10;
@@ -38,7 +38,7 @@ namespace Battleships.Presentation
                     ButtonExtended btnToAdd = new ButtonExtended(i, j);
                     btnToAdd.Height = 30;
                     btnToAdd.Width = 30;
-                    btnToAdd.Opacity = 0;
+                    btnToAdd.Opacity = buttonOpacity;
                     btnToAdd.Content = $"{i},{j}";
                     btnToAdd.Click += OnBtnClickTest;
                     Grid.SetColumn(btnToAdd, i);
@@ -50,8 +50,8 @@ namespace Battleships.Presentation
 
         private void btnSubmitAction_Click(object sender, RoutedEventArgs e)
         {
-            FillWithButtons(PlayerBoxGrid);
-            FillWithButtons(PlayerGuessBoxGrid);
+            FillWithButtons(PlayerBoxGrid, 0);
+            FillWithButtons(PlayerGuessBoxGrid, 1);
         }
 
         private void OnBtnClickTest(object sender, RoutedEventArgs e)

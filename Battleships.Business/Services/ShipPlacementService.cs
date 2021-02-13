@@ -10,9 +10,9 @@ namespace Battleships.Business.Services
 {
     public class ShipPlacementService
     {
-        List<List<Coordinate>> OccupiedCoordinates { get; set; }
-        int GridHeight { get; }
-        int GridWidth { get; }
+        public List<List<Coordinate>> OccupiedCoordinates { get; set; }
+        public int GridHeight { get; }
+        public int GridWidth { get; }
 
         public ShipPlacementService(int gridHeight, int gridWidth)
         {
@@ -21,28 +21,23 @@ namespace Battleships.Business.Services
             GridWidth = gridWidth;
         }
 
-        public IEnumerable<Coordinate> PlaceShip(string orientation, Coordinate coord, Ship ship)
+        public void PlaceShip(string orientation, Coordinate coord, Ship ship)
         {
             if (orientation == "Horizontal")
             {
-                List<Coordinate> coords = HorizontalPlacement(coord, ship).ToList();
-                if (coords.Count == ship.Size) PlaceCoordinates(ship, coords);
-                return coords;
+                HorizontalPlacement(coord, ship);
             }
             else if (orientation == "Vertical")
             {
-                List<Coordinate> coords = VerticalPlacement(coord, ship).ToList();
-                if (coords.Count == ship.Size) PlaceCoordinates(ship, coords);
-                return coords;
+                VerticalPlacement(coord, ship);
             }
             else
             {
                 MessageBox.Show("An error has occured!");
-                return new List<Coordinate>();
             }
         }
 
-        private IEnumerable<Coordinate> HorizontalPlacement(Coordinate coord, Ship ship)
+        private void HorizontalPlacement(Coordinate coord, Ship ship)
         {
             List<Coordinate> coords = new List<Coordinate>();
 
@@ -52,16 +47,7 @@ namespace Battleships.Business.Services
                 for (int i = 0; i < ship.Size; i++)
                 {
                     Coordinate newCoord = new Coordinate(coord.Column + i, coord.Row);
-                    
-                    if (!OccupiedCoordinates.Any(l => l.Contains(newCoord)))
-                    {
-                        coords.Add(newCoord);
-                    }
-                    else
-                    {
-                        Console.WriteLine("This coordinate choice is invalid!");
-                        return new List<Coordinate>();
-                    }
+                    coords.AddRange(CoordinateValidator(newCoord).ToList());
                 }
             }
             else
@@ -69,23 +55,14 @@ namespace Battleships.Business.Services
                 for (int i = 0; i < ship.Size; i++)
                 {
                     Coordinate newCoord = new Coordinate(coord.Column - i, coord.Row);
-
-                    if (!OccupiedCoordinates.Any(l => l.Contains(newCoord)))
-                    {
-                        coords.Add(newCoord);
-                    }
-                    else
-                    {
-                        Console.WriteLine("This coordinate choice is invalid!");
-                        return new List<Coordinate>();
-                    }
+                    coords.AddRange(CoordinateValidator(newCoord).ToList());
                 }
             }
 
-            return coords;
+            if (coords.Count == ship.Size) PlaceCoordinates(ship, coords);
         }
 
-        private IEnumerable<Coordinate> VerticalPlacement(Coordinate coord, Ship ship)
+        private void VerticalPlacement(Coordinate coord, Ship ship)
         {
             List<Coordinate> coords = new List<Coordinate>();
 
@@ -95,16 +72,7 @@ namespace Battleships.Business.Services
                 for (int i = 0; i < ship.Size; i++)
                 {
                     Coordinate newCoord = new Coordinate(coord.Column, coord.Row + i);
-
-                    if (!OccupiedCoordinates.Any(l => l.Contains(newCoord)))
-                    {
-                        coords.Add(newCoord);
-                    }
-                    else
-                    {
-                        Console.WriteLine("This coordinate choice is invalid!");
-                        return new List<Coordinate>();
-                    }
+                    coords.AddRange(CoordinateValidator(newCoord));
                 }
             }
             else
@@ -112,20 +80,28 @@ namespace Battleships.Business.Services
                 for (int i = 0; i < ship.Size; i++)
                 {
                     Coordinate newCoord = new Coordinate(coord.Column, coord.Row - i);
-
-                    if (!OccupiedCoordinates.Any(l => l.Contains(newCoord)))
-                    {
-                        coords.Add(newCoord);
-                    }
-                    else
-                    {
-                        Console.WriteLine("This coordinate choice is invalid!");
-                        return new List<Coordinate>();
-                    }
+                    coords.AddRange(CoordinateValidator(newCoord));
                 }
             }
 
-            return coords;
+            if (coords.Count == ship.Size) PlaceCoordinates(ship, coords);
+        }
+
+        private IEnumerable<Coordinate> CoordinateValidator(Coordinate coord)
+        {
+            List<Coordinate> returnCoords = new List<Coordinate>();
+
+            if (!OccupiedCoordinates.Any(l => l.Contains(coord)))
+            {
+                returnCoords.Add(coord);
+                return returnCoords;
+            }
+            else
+            {
+                MessageBox.Show("This coordinate choice is invalid!");
+                Console.WriteLine("This coordinate choice is invalid!");
+                return returnCoords;
+            }
         }
 
         private void PlaceCoordinates(Ship ship, IEnumerable<Coordinate> coords)

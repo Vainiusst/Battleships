@@ -14,37 +14,26 @@ namespace Battleships.Business
         {
             Coordinate coordTL = new Coordinate(5, 2);
             Coordinate coordTR = new Coordinate(3, 8);
-            Coordinate coordBL = new Coordinate(4, 9);
+            Coordinate coordBL = new Coordinate(5, 4);
             Coordinate coordBR = new Coordinate(1, 3);
             Ship ship = new Ship(4);
 
             ShipPlacementService sps = new ShipPlacementService(10, 10);
 
-            List<Coordinate> lctl = sps.PlaceShip("Vertical", coordTL, ship).ToList();
-            //List<Coordinate> lctr = sps.PlaceShip("Vertical", coordTR, ship).ToList();
-            //List<Coordinate> lcbl = sps.PlaceShip("Vertical", coordBL, ship).ToList();
-            //List<Coordinate> lcbr = sps.PlaceShip("Vertical", coordBR, ship).ToList();
+            sps.PlaceShip("Vertical", coordTL, ship);
+            sps.PlaceShip("Vertical", coordTR, ship);
+            sps.PlaceShip("Horizontal", coordBL, ship);
+            sps.PlaceShip("Horizontal", coordBR, ship);
 
-            foreach (var item in lctl)
+            foreach (var listCoor in sps.OccupiedCoordinates)
             {
-                Console.WriteLine($"{item.Column}, {item.Row}");
+                foreach(var coor in listCoor)
+                {
+                    Console.WriteLine($"{coor.Column}, {coor.Row}");
+                }
+                Console.WriteLine("-----------------");
             }
-            Console.WriteLine("-----------------");
-            //foreach (var item in lctr)
-            //{
-            //    Console.WriteLine($"{item.Column}, {item.Row}");
-            //}
-            //Console.WriteLine("-----------------");
-            //foreach (var item in lcbl)
-            //{
-            //    Console.WriteLine($"{item.Column}, {item.Row}");
-            //}
-            //Console.WriteLine("-----------------");
-            //foreach (var item in lcbr)
-            //{
-            //    Console.WriteLine($"{item.Column}, {item.Row}");
-            //}
-
+            
             Console.Read();
         }
     }
