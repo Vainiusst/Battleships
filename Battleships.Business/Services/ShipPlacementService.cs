@@ -29,7 +29,7 @@ namespace Battleships.Business.Services
             int maxCoord = 9;
 
             PlaceShip(
-                orientations[rand.Next(1)],
+                orientations[rand.Next(orientations.Length)],
                 new Coordinate(rand.Next(minCoord, maxCoord + 1), rand.Next(minCoord, maxCoord + 1)),
                 ship);
         }

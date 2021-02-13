@@ -95,7 +95,12 @@
                         <RowDefinition Height="30"/>
                     </Grid.RowDefinitions>
                 </Grid>
-            </StackPanel>            
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+                <Button x:Name="btnHorizontal" Width="75" Margin="0 0 5 0" Click="btnHorizontal_Click">Horizontal</Button>
+                <Button x:Name="btnVertical" Width="75" Margin="5 0 0 0" Click="btnVertical_Click">Vertical</Button>
+            </StackPanel>
+            <Label x:Name="ShipLabel"></Label>
         </StackPanel>
         <StackPanel x:Name="PlayerGuessBox" Grid.Column="1" Grid.Row="1">
             <Label HorizontalAlignment="Center">Oponent's ships</Label>
@@ -175,7 +180,7 @@
                     </Grid.RowDefinitions>
                 </Grid>
             </StackPanel>            
-            <Button x:Name="btnSubmitAction" Width="120" FontSize="16" Margin="5" Click="btnSubmitAction_Click">Submit action</Button>
+            <Button x:Name="btnSubmitAction" Width="120" FontSize="16" Margin="5">Submit action</Button>
         </StackPanel>
         <StackPanel x:Name="GameStatsBox" Grid.Column="2" Grid.Row="1" Margin="0 0 10 0">
             <Label HorizontalAlignment="Center">Moves</Label>

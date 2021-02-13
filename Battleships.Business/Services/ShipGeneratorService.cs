@@ -18,7 +18,7 @@ namespace Battleships.Business.Services
                 ships.Add(new Ship(size));
             }
 
-            return ships.ToArray();
+            return ships;
         }
     }
 }
