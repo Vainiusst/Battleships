@@ -8,7 +8,7 @@ using System.Windows;
 
 namespace Battleships.Business.Services
 {
-    public class ShipPlacementService
+    public class ShipPlacementService : IShipPlacementService
     {
         public List<List<Coordinate>> OccupiedCoordinates { get; set; }
         public int GridHeight { get; }
@@ -19,6 +19,19 @@ namespace Battleships.Business.Services
             OccupiedCoordinates = new List<List<Coordinate>>();
             GridHeight = gridHeight;
             GridWidth = gridWidth;
+        }
+
+        public void PlaceShipRandom(Ship ship)
+        {
+            Random rand = new Random();
+            string[] orientations = new string[] { "Horizontal", "Vertical" };
+            int minCoord = 0;
+            int maxCoord = 9;
+
+            PlaceShip(
+                orientations[rand.Next(1)],
+                new Coordinate(rand.Next(minCoord, maxCoord + 1), rand.Next(minCoord, maxCoord + 1)),
+                ship);
         }
 
         public void PlaceShip(string orientation, Coordinate coord, Ship ship)
