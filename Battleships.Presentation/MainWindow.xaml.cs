@@ -1,6 +1,5 @@
 ﻿using Battleships.Business.Models;
 using Battleships.Business.Services;
-using Battleships.Presentation.Models;
 using Battleships.Presentation.Services;
 using System.Collections.Generic;
 using System.Text;

@@ -56,7 +56,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Controls\StartGameButton.cs" />
-    <Compile Include="Models\CoordToLetterDict.cs" />
     <Compile Include="Services\ButtonFillingService.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
