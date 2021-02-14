@@ -44,9 +44,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Services\CoinToss.cs" />
     <Compile Include="Models\ComputerPlayer.cs" />
     <Compile Include="Models\Coordinate.cs" />
     <Compile Include="Models\GameGrid.cs" />
+    <Compile Include="Models\GameModels\Move.cs" />
+    <Compile Include="Services\IRandomShotService.cs" />
+    <Compile Include="Services\RandomShotService.cs" />
+    <Compile Include="Models\GameModels\Round.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="Models\Ship.cs" />
     <Compile Include="Models\ShipSizes.cs" />
