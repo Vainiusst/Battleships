@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-namespace Battleships.Presentation.Models
+namespace Battleships.Presentation.Controls
 {
     public class ButtonExtended : Button
     {

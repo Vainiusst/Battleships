@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -55,8 +53,7 @@ namespace Battleships.Business.Services
         {
             List<Coordinate> coords = new List<Coordinate>();
 
-            if ((GridWidth - 1 - coord.Column) >= ship.Size)
-            //-1 is used to adjust between measurment from 0 and measurment from 1
+            if ((GridWidth - coord.Column) >= ship.Size)
             {
                 for (int i = 0; i < ship.Size; i++)
                 {
@@ -80,8 +77,7 @@ namespace Battleships.Business.Services
         {
             List<Coordinate> coords = new List<Coordinate>();
 
-            if ((GridHeight - 1 - coord.Row) >= ship.Size)
-            //-1 is used to adjust between measurment from 0 and measurment from 1
+            if ((GridHeight - coord.Row) >= ship.Size)
             {
                 for (int i = 0; i < ship.Size; i++)
                 {

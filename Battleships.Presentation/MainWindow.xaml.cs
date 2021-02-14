@@ -9,6 +9,7 @@ using System.Windows;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Battleships.Presentation.Controls;
 
 namespace Battleships.Presentation
 {
@@ -25,14 +26,25 @@ namespace Battleships.Presentation
         public MainWindow()
         {
             InitializeComponent();
-            var p1 = new Player();
-            var pc = new Player();
-            var rsps = new ShipPlacementService(p1.Grid.Height, p1.Grid.Width);
-            var rrsps = new RandomShipPlacementService(pc.Grid.Height, pc.Grid.Width);
-            var bfs = new ButtonFillingService();
-            ShipOrientation = Orientation.Horizontal;
+            PrepareComputerForGame();
+            PreparePlayerForGame();
 
-            SetComputerShips(pc, rrsps);
+            ShipOrientation = Orientation.Horizontal; //Default orientation is horizontal
+            btnHorizontal.Background = Brushes.Green;
+        }
+
+        private void PrepareComputerForGame()
+        {
+            var pc = new Player();
+            var rsps = new RandomShipPlacementService(pc.Grid.Height, pc.Grid.Width);
+            SetComputerShips(pc, rsps);
+        }
+
+        private void PreparePlayerForGame()
+        {
+            var p1 = new Player();
+            var sps = new ShipPlacementService(p1.Grid.Height, p1.Grid.Width);
+            var bfs = new ButtonFillingService();
 
             ClickSomewhere = new TaskCompletionSource<Coordinate>();
             ClickSomewhereTask = ClickSomewhere.Task;
@@ -41,7 +53,7 @@ namespace Battleships.Presentation
             bfs.FillWithButtons(PlayerBoxGrid, p1.Grid, ShouldHaveContent[1], WaitingForMouseClick);
             bfs.FillWithButtons(PlayerGuessBoxGrid, p1.GuessGrid, ShouldHaveContent[0], null);
 
-            SetShips(p1, rsps);
+            SetShips(p1, sps);
         }
 
         private async void SetShips(Player p, ShipPlacementService sps)
@@ -56,7 +68,9 @@ namespace Battleships.Presentation
                 CurrentCoordinate = null;
                 ColourTheShip(theShip.Placement);
             }
+            PlayerButtonsPanel.Children.Clear();
             InfoLabel.Content = null;
+            PlayerButtonsPanel.Children.Add(new StartGameButton());
         }
 
         private void SetComputerShips(Player p, RandomShipPlacementService rsps)
@@ -67,20 +81,20 @@ namespace Battleships.Presentation
                 rsps.PlaceShipRandom(theShip);
             }
 
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine("The computer ships have been placed.");
+            //StringBuilder sb = new StringBuilder();
+            //sb.AppendLine("The computer ships have been placed.");
 
-            foreach(Ship ship in p.Ships)
-            {
-                sb.AppendLine("Coordinates:");
-                foreach(Coordinate coord in ship.Placement)
-                {
-                    sb.Append($"{coord.Column};{coord.Row} ");
-                }
-                sb.AppendLine();
-            }
-            
-            MessageBox.Show(sb.ToString());
+            //foreach (Ship ship in p.Ships)
+            //{
+            //    sb.AppendLine("Coordinates:");
+            //    foreach (Coordinate coord in ship.Placement)
+            //    {
+            //        sb.Append($"{coord.Column};{coord.Row} ");
+            //    }
+            //    sb.AppendLine();
+            //}
+
+            //MessageBox.Show(sb.ToString());
         }
 
         public void WaitingForMouseClick(object sender, RoutedEventArgs args)
@@ -102,11 +116,15 @@ namespace Battleships.Presentation
 
         private void btnHorizontal_Click(object sender, RoutedEventArgs e)
         {
+            btnVertical.Background = Brushes.LightGray;
+            btnHorizontal.Background = Brushes.Green;
             ShipOrientation = Orientation.Horizontal;
         }
 
         private void btnVertical_Click(object sender, RoutedEventArgs e)
         {
+            btnHorizontal.Background = Brushes.LightGray;
+            btnVertical.Background = Brushes.Green;
             ShipOrientation = Orientation.Vertical;
         }
 
