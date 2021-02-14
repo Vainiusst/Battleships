@@ -100,7 +100,7 @@
                 <Button x:Name="btnHorizontal" Width="75" Margin="0 0 5 0" Click="btnHorizontal_Click">Horizontal</Button>
                 <Button x:Name="btnVertical" Width="75" Margin="5 0 0 0" Click="btnVertical_Click">Vertical</Button>
             </StackPanel>
-            <Label x:Name="ShipLabel"></Label>
+            <Label x:Name="InfoLabel"></Label>
         </StackPanel>
         <StackPanel x:Name="PlayerGuessBox" Grid.Column="1" Grid.Row="1">
             <Label HorizontalAlignment="Center">Oponent's ships</Label>

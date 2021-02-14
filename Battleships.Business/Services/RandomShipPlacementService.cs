@@ -9,13 +9,13 @@ using System.Windows.Controls;
 
 namespace Battleships.Business.Services
 {
-    public class ShipPlacementService : IShipPlacementService
+    public class RandomShipPlacementService : IShipPlacementService
     {
         public List<List<Coordinate>> OccupiedCoordinates { get; set; }
         public int GridHeight { get; }
         public int GridWidth { get; }
 
-        public ShipPlacementService(int gridHeight, int gridWidth)
+        public RandomShipPlacementService(int gridHeight, int gridWidth)
         {
             OccupiedCoordinates = new List<List<Coordinate>>();
             GridHeight = gridHeight;
@@ -112,7 +112,6 @@ namespace Battleships.Business.Services
             }
             else
             {
-                MessageBox.Show("This coordinate choice is invalid!");
                 return returnCoords;
             }
         }

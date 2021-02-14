@@ -20,36 +20,51 @@ namespace Battleships.Presentation
         private TaskCompletionSource<Coordinate> ClickSomewhere { get; set; }
         private Task<Coordinate> ClickSomewhereTask { get; set; }
         private Coordinate CurrentCoordinate { get; set; }
-        private bool ShipOrientation { get; set; }
+        private Orientation ShipOrientation { get; set; }
         
         public MainWindow()
         {
             InitializeComponent();
             var p1 = new Player();
             var pc = new Player();
-            var sps = new ShipPlacementService(p1.Grid.Height, p1.Grid.Width);
-            var spsPC = new ShipPlacementService(pc.Grid.Height, pc.Grid.Width);
+            var rsps = new ShipPlacementService(p1.Grid.Height, p1.Grid.Width);
+            var rrsps = new RandomShipPlacementService(pc.Grid.Height, pc.Grid.Width);
             var bfs = new ButtonFillingService();
-            ShipOrientation = true;
+            ShipOrientation = Orientation.Horizontal;
 
-            SetComputerShips(pc, spsPC);
+            SetComputerShips(pc, rrsps);
 
-            //ClickSomewhere = new TaskCompletionSource<Coordinate>();
-            //ClickSomewhereTask = ClickSomewhere.Task;
+            ClickSomewhere = new TaskCompletionSource<Coordinate>();
+            ClickSomewhereTask = ClickSomewhere.Task;
 
-            
-            //bfs.FillWithButtons(PlayerBoxGrid, p1.Grid, false, WaitingForMouseClick);
-            //bfs.FillWithButtons(PlayerGuessBoxGrid, p1.GuessGrid, true, null);
+            bool[] ShouldHaveContent = new bool[] { true, false };
+            bfs.FillWithButtons(PlayerBoxGrid, p1.Grid, ShouldHaveContent[1], WaitingForMouseClick);
+            bfs.FillWithButtons(PlayerGuessBoxGrid, p1.GuessGrid, ShouldHaveContent[0], null);
 
-            //SetShips(p1, sps);
+            SetShips(p1, rsps);
         }
 
-        private void SetComputerShips(Player p, ShipPlacementService sps)
+        private async void SetShips(Player p, ShipPlacementService sps)
         {
             while (p.Ships.Count > sps.OccupiedCoordinates.Count)
             {
                 var theShip = p.Ships[sps.OccupiedCoordinates.Count];
-                sps.PlaceShipRandom(theShip);
+                InfoLabel.Content = $"Setting the coordinates for ship of size {theShip.Size}";
+                await UserClickedOnCoordinateBoard();
+                sps.PlaceShip(ShipOrientation, CurrentCoordinate, theShip);
+
+                CurrentCoordinate = null;
+                ColourTheShip(theShip.Placement);
+            }
+            InfoLabel.Content = null;
+        }
+
+        private void SetComputerShips(Player p, RandomShipPlacementService rsps)
+        {
+            while (p.Ships.Count > rsps.OccupiedCoordinates.Count)
+            {
+                var theShip = p.Ships[rsps.OccupiedCoordinates.Count];
+                rsps.PlaceShipRandom(theShip);
             }
 
             StringBuilder sb = new StringBuilder();
@@ -66,11 +81,6 @@ namespace Battleships.Presentation
             }
             
             MessageBox.Show(sb.ToString());
-        }
-
-        private string OrientationSetter(bool shipOrient)
-        {
-            return shipOrient ? Orientation.Horizontal.ToString() : Orientation.Vertical.ToString();
         }
 
         public void WaitingForMouseClick(object sender, RoutedEventArgs args)
@@ -92,33 +102,12 @@ namespace Battleships.Presentation
 
         private void btnHorizontal_Click(object sender, RoutedEventArgs e)
         {
-            ShipOrientation = true;
+            ShipOrientation = Orientation.Horizontal;
         }
 
         private void btnVertical_Click(object sender, RoutedEventArgs e)
         {
-            ShipOrientation = false;
-        }
-
-        private async void SetShips(Player p, ShipPlacementService sps)
-        {
-            while (p.Ships.Count > sps.OccupiedCoordinates.Count)
-            {                
-                var theShip = p.Ships[sps.OccupiedCoordinates.Count];
-                ShipLabel.Content = $"Setting the coordinates for ship of size {theShip.Size}";
-                await UserClickedOnCoordinateBoard();
-                sps.PlaceShip(OrientationSetter(ShipOrientation), CurrentCoordinate, theShip);
-
-                CurrentCoordinate = null;
-                ColourTheShip(theShip.Placement);
-            }
-            ShipLabel.Content = null;
-        }
-
-        enum Orientation
-        {
-            Horizontal,
-            Vertical
+            ShipOrientation = Orientation.Vertical;
         }
 
         private void ColourTheShip(List<Coordinate> coords)

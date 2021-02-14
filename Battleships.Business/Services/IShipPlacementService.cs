@@ -1,5 +1,6 @@
 ﻿using Battleships.Business.Models;
 using System.Collections.Generic;
+using System.Windows.Controls;
 
 namespace Battleships.Business.Services
 {
@@ -9,7 +10,7 @@ namespace Battleships.Business.Services
         int GridWidth { get; }
         List<List<Coordinate>> OccupiedCoordinates { get; set; }
 
-        void PlaceShip(string orientation, Coordinate coord, Ship ship);
+        void PlaceShip(Orientation orientation, Coordinate coord, Ship ship);
         void PlaceShipRandom(Ship ship);
     }
 }
