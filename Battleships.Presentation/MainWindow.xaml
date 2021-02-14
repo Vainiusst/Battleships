@@ -97,7 +97,7 @@
                 </Grid>
             </StackPanel>
             <StackPanel x:Name="PlayerButtonsPanel" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-                <Button x:Name="btnHorizontal" Width="75" Margin="0 0 5 0" Click="btnHorizontal_Click">Horizontal</Button>
+                <Button x:Name="btnHorizontal" Width="75" Margin="0 0 5 0" Click="btnHorizontal_Click" Background="Green">Horizontal</Button>
                 <Button x:Name="btnVertical" Width="75" Margin="5 0 0 0" Click="btnVertical_Click">Vertical</Button>
             </StackPanel>
             <Label x:Name="InfoLabel" HorizontalAlignment="Center"></Label>
@@ -180,7 +180,7 @@
                     </Grid.RowDefinitions>
                 </Grid>
             </StackPanel>            
-            <Button x:Name="btnSubmitAction" Width="120" FontSize="16" Margin="5" IsEnabled="False">Submit action</Button>
+            <Button x:Name="btnSubmitAction" x:FieldModifier="public" Width="120" FontSize="16" Margin="5" IsEnabled="False">Submit action</Button>
         </StackPanel>
         <StackPanel x:Name="GameStatsBox" Grid.Column="2" Grid.Row="1" Margin="0 0 10 0">
             <Label HorizontalAlignment="Center">Moves</Label>

@@ -4,18 +4,18 @@ namespace Battleships.Business.Services
 {
     public static class CoinToss
     {
-        private enum Players
+        public enum Players
         {
             Player,
             Computer
         }
 
-        public static string Toss()
+        public static Players Toss()
         {
             Random rand = new Random();
             Players[] plrs = new Players[] { Players.Player, Players.Computer };
 
-            return plrs[rand.Next(plrs.Length)].ToString();
+            return plrs[rand.Next(plrs.Length)];
         }
     }
 }

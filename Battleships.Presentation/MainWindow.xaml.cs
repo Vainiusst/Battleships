@@ -20,40 +20,39 @@ namespace Battleships.Presentation
     {
         private TaskCompletionSource<Coordinate> ClickSomewhere { get; set; }
         private Task<Coordinate> ClickSomewhereTask { get; set; }
-        private Coordinate CurrentCoordinate { get; set; }
         private Orientation ShipOrientation { get; set; }
         
         public MainWindow()
         {
-            InitializeComponent();
-            PrepareComputerForGame();
-            PreparePlayerForGame();
+            Player PlayerPC = new Player();
+            Player Player = new Player();
 
             ShipOrientation = Orientation.Horizontal; //Default orientation is horizontal
-            btnHorizontal.Background = Brushes.Green;
+
+            InitializeComponent();            
+            PrepareComputerForGame(PlayerPC);
+            PreparePlayerForGame(Player);
         }
 
-        private void PrepareComputerForGame()
+        private void PrepareComputerForGame(Player pc)
         {
-            var pc = new Player();
             var rsps = new RandomShipPlacementService(pc.Grid.Height, pc.Grid.Width);
             SetComputerShips(pc, rsps);
         }
 
-        private void PreparePlayerForGame()
+        private void PreparePlayerForGame(Player player)
         {
-            var p1 = new Player();
-            var sps = new ShipPlacementService(p1.Grid.Height, p1.Grid.Width);
+            var sps = new ShipPlacementService(player.Grid.Height, player.Grid.Width);
             var bfs = new ButtonFillingService();
 
             ClickSomewhere = new TaskCompletionSource<Coordinate>();
             ClickSomewhereTask = ClickSomewhere.Task;
 
             bool[] ShouldHaveContent = new bool[] { true, false };
-            bfs.FillWithButtons(PlayerBoxGrid, p1.Grid, ShouldHaveContent[1], WaitingForMouseClick);
-            bfs.FillWithButtons(PlayerGuessBoxGrid, p1.GuessGrid, ShouldHaveContent[0], null);
+            bfs.FillWithButtons(PlayerBoxGrid, player.Grid, ShouldHaveContent[1], SetShipClick);
+            bfs.FillWithButtons(PlayerGuessBoxGrid, player.GuessGrid, ShouldHaveContent[0], null);
 
-            SetShips(p1, sps);
+            SetShips(player, sps);
         }
 
         private async void SetShips(Player p, ShipPlacementService sps)
@@ -62,15 +61,15 @@ namespace Battleships.Presentation
             {
                 var theShip = p.Ships[sps.OccupiedCoordinates.Count];
                 InfoLabel.Content = $"Setting the coordinates for ship of size {theShip.Size}";
-                await UserClickedOnCoordinateBoard();
-                sps.PlaceShip(ShipOrientation, CurrentCoordinate, theShip);
+                Coordinate coordToUse = await UserClickedOnCoordinateBoard();
+                sps.PlaceShip(ShipOrientation, coordToUse, theShip);
 
-                CurrentCoordinate = null;
                 ColourTheShip(theShip.Placement);
             }
+
             PlayerButtonsPanel.Children.Clear();
             InfoLabel.Content = null;
-            PlayerButtonsPanel.Children.Add(new StartGameButton());
+            GenerateStartButton();
         }
 
         private void SetComputerShips(Player p, RandomShipPlacementService rsps)
@@ -80,29 +79,13 @@ namespace Battleships.Presentation
                 var theShip = p.Ships[rsps.OccupiedCoordinates.Count];
                 rsps.PlaceShipRandom(theShip);
             }
-
-            //StringBuilder sb = new StringBuilder();
-            //sb.AppendLine("The computer ships have been placed.");
-
-            //foreach (Ship ship in p.Ships)
-            //{
-            //    sb.AppendLine("Coordinates:");
-            //    foreach (Coordinate coord in ship.Placement)
-            //    {
-            //        sb.Append($"{coord.Column};{coord.Row} ");
-            //    }
-            //    sb.AppendLine();
-            //}
-
-            //MessageBox.Show(sb.ToString());
         }
 
-        public void WaitingForMouseClick(object sender, RoutedEventArgs args)
+        public void SetShipClick(object sender, RoutedEventArgs args)
         {
             if (ClickSomewhere != null)
             {
                 ButtonExtended btn = (ButtonExtended)sender;
-                CurrentCoordinate = btn.Coordinate;
                 ClickSomewhere.TrySetResult(btn.Coordinate);
                 ClickSomewhere = null;
             }    
@@ -112,20 +95,6 @@ namespace Battleships.Presentation
         {
             ClickSomewhere = new TaskCompletionSource<Coordinate>();
             return await ClickSomewhere.Task;
-        }
-
-        private void btnHorizontal_Click(object sender, RoutedEventArgs e)
-        {
-            btnVertical.Background = Brushes.LightGray;
-            btnHorizontal.Background = Brushes.Green;
-            ShipOrientation = Orientation.Horizontal;
-        }
-
-        private void btnVertical_Click(object sender, RoutedEventArgs e)
-        {
-            btnHorizontal.Background = Brushes.LightGray;
-            btnVertical.Background = Brushes.Green;
-            ShipOrientation = Orientation.Vertical;
         }
 
         private void ColourTheShip(List<Coordinate> coords)
@@ -143,7 +112,34 @@ namespace Battleships.Presentation
 
                 btn.Opacity = 1;
                 btn.Background = Brushes.Gray;
-            }            
+            }
+        }
+
+        private void GenerateStartButton()
+        {
+            var btn = new StartGameButton();
+            btn.Click += btnStartGame_Click;
+            PlayerButtonsPanel.Children.Add(btn);
+        }
+
+        private void btnStartGame_Click(object sender, RoutedEventArgs e)
+        {
+            btnSubmitAction.IsEnabled = true;
+            PlayerButtonsPanel.Children.Clear();
+        }
+
+        private void btnHorizontal_Click(object sender, RoutedEventArgs e)
+        {
+            ShipOrientation = Orientation.Horizontal;
+            btnVertical.Background = Brushes.LightGray;
+            btnHorizontal.Background = Brushes.Green;
+        }
+
+        private void btnVertical_Click(object sender, RoutedEventArgs e)
+        {
+            ShipOrientation = Orientation.Vertical;
+            btnHorizontal.Background = Brushes.LightGray;
+            btnVertical.Background = Brushes.Green;
         }
     }
 }

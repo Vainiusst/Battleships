@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Battleships.Presentation;
 
 namespace Battleships.Presentation.Controls
 {
@@ -16,6 +18,7 @@ namespace Battleships.Presentation.Controls
             this.FontSize = 20;
             this.Width = 150;
             this.Background = Brushes.LimeGreen;
+            this.Name = "btnStartGame";
         }
     }
 }

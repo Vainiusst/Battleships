@@ -49,6 +49,7 @@
     <Compile Include="Models\Coordinate.cs" />
     <Compile Include="Models\GameGrid.cs" />
     <Compile Include="Models\GameModels\Move.cs" />
+    <Compile Include="Services\Game.cs" />
     <Compile Include="Services\IRandomShotService.cs" />
     <Compile Include="Services\RandomShotService.cs" />
     <Compile Include="Models\GameModels\Round.cs" />

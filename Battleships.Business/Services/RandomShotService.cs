@@ -11,22 +11,20 @@ namespace Battleships.Business.Services
     {
         public Player Player { get; }
         public Random Rand { get; set; }
-        public List<Coordinate> ShotsTaken { get; set; }
 
-        public RandomShotService(Player player, Random rand, List<Coordinate> shotsTaken)
+        public RandomShotService(Player player, Random rand)
         {
             Player = player;
             Rand = rand;
-            ShotsTaken = shotsTaken;
         }
 
         public Coordinate Shoot()
         {
             var shotToTake = RandomCoord();
 
-            if (!ShotsTaken.Contains(shotToTake))
+            if (!Player.ShotsTaken.Contains(shotToTake))
             {
-                ShotsTaken.Add(shotToTake);
+                Player.ShotsTaken.Add(shotToTake);
                 return shotToTake;
             }
             else
