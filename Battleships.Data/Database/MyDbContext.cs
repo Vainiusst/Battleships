@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Battleships.Data.Models;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -13,5 +14,9 @@ namespace Battleships.Data.Database
         {
             System.Data.Entity.Database.SetInitializer(new ContextInitializer());
         }
+
+        public DbSet<DbUser> Users { get; set; }
+        public DbSet<DbScore> Scores { get; set; }
+        public DbSet<DbGame> Games { get; set; }
     }
 }

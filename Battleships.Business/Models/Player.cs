@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Battleships.Business.Models
 {
-    public class Player : User
+    public class Player
     {
         public List<Ship> Ships { get; set; }
         public GameGrid Grid { get; }
