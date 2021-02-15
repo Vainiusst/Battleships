@@ -11,5 +11,12 @@ namespace Battleships.Business.Models
         public string Name { get; }
         public int Wins { get; set; }
         public int Losses { get; set; }
+
+        //public User()
+        //{
+        //    Name = name;
+        //    Wins = 0;
+        //    Losses = 0;
+        //}
     }
 }

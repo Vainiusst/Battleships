@@ -1,6 +1,6 @@
 ﻿using Battleships.Business.Models;
+using Battleships.Business.Services;
 using Battleships.Presentation.Controls;
-using Battleships.Presentation.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +27,7 @@ namespace Battleships.Presentation.Services
                     btnToAdd.Name = $"bg{i}{j}";
                     btnToAdd.Height = 30;
                     btnToAdd.Width = 30;
-                    if (addContent) btnToAdd.Content = $"{CoordToLetterDict.coordToLetter[i]}{j+1}";
+                    if (addContent) btnToAdd.Content = $"{CoordinateTranslationService.Translate(new Coordinate(i, j))}";
                     if (!addContent)
                     {
                         btnToAdd.Background = Brushes.LightGray;

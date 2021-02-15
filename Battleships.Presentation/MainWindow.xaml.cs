@@ -9,6 +9,7 @@ using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Battleships.Presentation.Controls;
+using System;
 
 namespace Battleships.Presentation
 {
@@ -17,6 +18,7 @@ namespace Battleships.Presentation
     /// </summary>
     public partial class MainWindow : Window
     {
+        //private User CurrentUser { get; }
         private TaskCompletionSource<Coordinate> ClickSomewhere { get; set; }
         private Task<Coordinate> ClickSomewhereTask { get; set; }
         private Orientation ShipOrientation { get; set; }
@@ -35,7 +37,7 @@ namespace Battleships.Presentation
 
         private void PrepareComputerForGame(Player pc)
         {
-            var rsps = new RandomShipPlacementService(pc.Grid.Height, pc.Grid.Width);
+            var rsps = new RandomShipPlacementService(pc.Grid.Height, pc.Grid.Width, new Random());
             SetComputerShips(pc, rsps);
         }
 

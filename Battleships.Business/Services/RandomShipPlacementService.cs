@@ -11,27 +11,28 @@ namespace Battleships.Business.Services
 {
     public class RandomShipPlacementService : IShipPlacementService
     {
+        private Random Rand { get; set; }
         public List<List<Coordinate>> OccupiedCoordinates { get; set; }
         public int GridHeight { get; }
         public int GridWidth { get; }
 
-        public RandomShipPlacementService(int gridHeight, int gridWidth)
+        public RandomShipPlacementService(int gridHeight, int gridWidth, Random rand)
         {
             OccupiedCoordinates = new List<List<Coordinate>>();
             GridHeight = gridHeight;
             GridWidth = gridWidth;
+            Rand = rand;
         }
 
         public void PlaceShipRandom(Ship ship)
         {
-            Random rand = new Random();
             Orientation[] orientations = new Orientation[] { Orientation.Horizontal, Orientation.Vertical };
             int minCoord = 0;
             int maxCoord = 9;
 
             PlaceShip(
-                orientations[rand.Next(orientations.Length)],
-                new Coordinate(rand.Next(minCoord, maxCoord + 1), rand.Next(minCoord, maxCoord + 1)),
+                orientations[Rand.Next(orientations.Length)],
+                new Coordinate(Rand.Next(minCoord, maxCoord + 1), Rand.Next(minCoord, maxCoord + 1)),
                 ship);
         }
 

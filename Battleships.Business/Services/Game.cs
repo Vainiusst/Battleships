@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace Battleships.Business.Services
 {
@@ -14,10 +15,15 @@ namespace Battleships.Business.Services
         public Player Player { get; set; }
         public Player ComputerPlayer { get; set; }
 
-        public Game(Player player, Player computerPlayer)
+        private TaskCompletionSource<Coordinate> Tcs { get; set; }
+        private Task<Coordinate> Task { get; set; }
+
+        public Game(Player player, Player computerPlayer, TaskCompletionSource<Coordinate> tcs, Task<Coordinate> task)
         {
             Player = player;
             ComputerPlayer = computerPlayer;
+            Tcs = tcs;
+            Task = task;
         }
 
         //private void StartGame()
@@ -34,68 +40,84 @@ namespace Battleships.Business.Services
         //        GameInitiate(whoStarts);
         //    }
         //}
-
-        //private Coordinate Shoot(Player player, Coordinate coord)
-        //{
-        //    player.ShotsTaken.Add(coord);
-        //    return coord;
-        //}
-
-        //private void GameInitiate(CoinToss.Players player)
-        //{
-        //    if(player == CoinToss.Players.Player)
-        //    {
-        //        PlayerFirst();
-        //    }
-        //    else
-        //    {
-        //        ComputerFirst();
-        //    }
-        //}
-
-        public Round PlayerFirst(Coordinate plrCoord, RandomShotService rss)
+        public Round ComputerFirst(RandomShotService rss, Label lbl, Coordinate coord)
         {
-            return new Round(PlayerMove(plrCoord), ComputerMove(rss));
+            var move1 = FullComputerMove(rss, lbl);
+            var move2 = FullPlayerMove(coord, lbl);
+
+            return new Round(move2, move1);
         }
 
-        public Round ComputerFirst(RandomShotService rss, Coordinate plrCoord)
+        public Round PlayerFirst(RandomShotService rss, Label lbl, Coordinate coord)
         {
-            return new Round(ComputerMove(rss), PlayerMove(plrCoord));
+            var move1 = FullPlayerMove(coord, lbl);
+            var move2 = FullComputerMove(rss, lbl);
+
+            return new Round(move1, move2);
         }
 
-        private Move PlayerMove(Coordinate shootingCoord)
+        public Move FullPlayerMove(Coordinate coord, Label lbl)
+        {
+            var returnMv = PlayerMove(coord);
+            OutputTheHit(lbl, returnMv, Player);
+
+            return returnMv;
+        }
+
+        public Move FullComputerMove(RandomShotService rss, Label lbl)
+        {
+            var returnMv = ComputerMove(rss);
+            OutputTheHit(lbl, returnMv, ComputerPlayer);
+
+            return returnMv;
+        }
+
+        public Move PlayerMove(Coordinate shootingCoord)
         {
             Player.ShotsTaken.Add(shootingCoord);
             return new Move(shootingCoord, CoordinateTranslationService.Translate(shootingCoord));
         }
 
-        private Move ComputerMove(RandomShotService rss)
+        public Move ComputerMove(RandomShotService rss)
         {
             var shootingCoord = rss.Shoot();
             ComputerPlayer.ShotsTaken.Add(shootingCoord);
             return new Move(shootingCoord, CoordinateTranslationService.Translate(shootingCoord));
         }
 
-        //private bool IsHit(Player plr, Coordinate coordShotAt)
-        //{
-        //    return plr.Ships
-        //        .Where(s => !s.IsSunk)
-        //        .SelectMany(c => c.Placement)
-        //        .ToList()
-        //        .Contains(coordShotAt);
-        //}
+        public bool IsHit(Player plr, Coordinate coordShotAt)
+        {
+            return plr.Ships
+                .Where(s => !s.IsSunk)
+                .SelectMany(c => c.Placement)
+                .ToList()
+                .Contains(coordShotAt);
+        }
 
-        //private int FindShipSize(Player plr, Coordinate coord)
-        //{
-        //    var shipList = plr.Ships.Select(s => s.Placement).ToList();
-        //    foreach(var list in shipList)
-        //    {
-        //        if (list.Contains(coord))
-        //        {
-        //            return list.Count;
-        //        }
-        //    }
-        //    return -1;
-        //}
+        public int FindShipSize(Player plr, Coordinate coord)
+        {
+            var shipList = plr.Ships.Select(s => s.Placement).ToList();
+            foreach (var list in shipList)
+            {
+                if (list.Contains(coord)) return list.Count;
+            }
+            return -1;
+        }
+
+        public void OutputTheHit(Label lbl, Move mv, Player plr)
+        {
+            StringBuilder outputString = new StringBuilder($"{plr.Name} fired at square {mv.MoveStr}. ");
+
+            if (IsHit(plr, mv.MoveCoord))
+            {
+                outputString.Append($"The shot hit a ship of size {FindShipSize(plr, mv.MoveCoord)}");
+            }
+            else
+            {
+                outputString.Append("The shot missed.");
+            }
+
+            lbl.Content = outputString.ToString();
+        }
     }
 }
