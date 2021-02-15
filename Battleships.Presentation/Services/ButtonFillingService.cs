@@ -40,5 +40,10 @@ namespace Battleships.Presentation.Services
                 }
             }
         }
+
+        internal void FillWithButtons(object playerBoxGrid, GameGrid grid, bool v, Action<object, RoutedEventArgs> setShipClick)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

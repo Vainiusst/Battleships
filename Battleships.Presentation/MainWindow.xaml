@@ -5,191 +5,36 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Battleships.Presentation"
         mc:Ignorable="d"
-        Title="Battleships" Height="500" Width="1000"
+        Title="Battleships" Height="450" Width="300"
         Background="LightSkyBlue">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="400"></ColumnDefinition>
-            <ColumnDefinition Width="400"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="20"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="20"></RowDefinition>
-        </Grid.RowDefinitions>
-        <StackPanel x:Name="PlayerBox" Grid.Column="0" Grid.Row="1">
-            <Label HorizontalAlignment="Center">Your ships</Label>
-            <Grid Height="30" Width="300" Margin="0 5 0 0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="30"></ColumnDefinition>
-                    <ColumnDefinition Width="30"></ColumnDefinition>
-                    <ColumnDefinition Width="30"></ColumnDefinition>
-                    <ColumnDefinition Width="30"></ColumnDefinition>
-                    <ColumnDefinition Width="30"></ColumnDefinition>
-                    <ColumnDefinition Width="30"></ColumnDefinition>
-                    <ColumnDefinition Width="30"></ColumnDefinition>
-                    <ColumnDefinition Width="30"></ColumnDefinition>
-                    <ColumnDefinition Width="30"></ColumnDefinition>
-                    <ColumnDefinition Width="30"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">1</Label>
-                <Label Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">2</Label>
-                <Label Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">3</Label>
-                <Label Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">4</Label>
-                <Label Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">5</Label>
-                <Label Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">6</Label>
-                <Label Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">7</Label>
-                <Label Grid.Column="7" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">8</Label>
-                <Label Grid.Column="8" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">9</Label>
-                <Label Grid.Column="9" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">10</Label>
-            </Grid>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="-30 0 0 0">
-                <Grid Height="300" Width="30">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="30"></RowDefinition>
-                        <RowDefinition Height="30"></RowDefinition>
-                        <RowDefinition Height="30"></RowDefinition>
-                        <RowDefinition Height="30"></RowDefinition>
-                        <RowDefinition Height="30"></RowDefinition>
-                        <RowDefinition Height="30"></RowDefinition>
-                        <RowDefinition Height="30"></RowDefinition>
-                        <RowDefinition Height="30"></RowDefinition>
-                        <RowDefinition Height="30"></RowDefinition>
-                        <RowDefinition Height="30"></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">A</Label>
-                    <Label Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">B</Label>
-                    <Label Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">C</Label>
-                    <Label Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">D</Label>
-                    <Label Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">E</Label>
-                    <Label Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">F</Label>
-                    <Label Grid.Row="6" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">G</Label>
-                    <Label Grid.Row="7" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">H</Label>
-                    <Label Grid.Row="8" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">I</Label>
-                    <Label Grid.Row="9" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">J</Label>
-                </Grid>
-                <Grid x:Name="PlayerBoxGrid" Width="300" Height="300" ShowGridLines="True" Background="#FFE0E0E0" OpacityMask="Black">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="30"/>
-                        <ColumnDefinition Width="30"/>
-                        <ColumnDefinition Width="30"/>
-                        <ColumnDefinition Width="30"/>
-                        <ColumnDefinition Width="30"/>
-                        <ColumnDefinition Width="30"/>
-                        <ColumnDefinition Width="30"/>
-                        <ColumnDefinition Width="30"/>
-                        <ColumnDefinition Width="30"/>
-                        <ColumnDefinition Width="30"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="30"/>
-                    </Grid.RowDefinitions>
-                </Grid>
-            </StackPanel>
-            <StackPanel x:Name="PlayerButtonsPanel" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-                <Button x:Name="btnHorizontal" Width="75" Margin="0 0 5 0" Click="btnHorizontal_Click" Background="Green">Horizontal</Button>
-                <Button x:Name="btnVertical" Width="75" Margin="5 0 0 0" Click="btnVertical_Click">Vertical</Button>
-            </StackPanel>
-            <Label x:Name="InfoLabel" HorizontalAlignment="Center"></Label>
+        <StackPanel x:Name="LoginPanel" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Visible">
+            <Label>Username</Label>
+            <TextBox x:Name="tbLoginUsername" FontSize="20" Height="30" Width="200" Margin="0 0 0 10"></TextBox>
+            <Label>Password</Label>
+            <PasswordBox x:Name="tbLoginPassword" FontSize="20" Height="30" Width="200" Margin="0 0 0 10"></PasswordBox>
+            <Button x:Name="btnLoginLogin" Height="30" Width="100" FontSize="15" Click="btnLoginLogin_Click">Login</Button>
+            <Button x:Name="btnRegisterLogin" Height="25" Width="80" FontSize="10" Margin="0 20 0 0" Click="btnRegisterLogin_Click">Register</Button>
         </StackPanel>
-        <StackPanel x:Name="PlayerGuessBox" Grid.Column="1" Grid.Row="1">
-            <Label HorizontalAlignment="Center">Oponent's ships</Label>
-            <Grid Height="30" Width="300" Margin="0 5 5 0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="30"></ColumnDefinition>
-                    <ColumnDefinition Width="30"></ColumnDefinition>
-                    <ColumnDefinition Width="30"></ColumnDefinition>
-                    <ColumnDefinition Width="30"></ColumnDefinition>
-                    <ColumnDefinition Width="30"></ColumnDefinition>
-                    <ColumnDefinition Width="30"></ColumnDefinition>
-                    <ColumnDefinition Width="30"></ColumnDefinition>
-                    <ColumnDefinition Width="30"></ColumnDefinition>
-                    <ColumnDefinition Width="30"></ColumnDefinition>
-                    <ColumnDefinition Width="30"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Label Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">1</Label>
-                <Label Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">2</Label>
-                <Label Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">3</Label>
-                <Label Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">4</Label>
-                <Label Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">5</Label>
-                <Label Grid.Column="5" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">6</Label>
-                <Label Grid.Column="6" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">7</Label>
-                <Label Grid.Column="7" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">8</Label>
-                <Label Grid.Column="8" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">9</Label>
-                <Label Grid.Column="9" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">10</Label>
-            </Grid>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="-30 0 0 0">
-                <Grid Height="300" Width="30">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="30"></RowDefinition>
-                        <RowDefinition Height="30"></RowDefinition>
-                        <RowDefinition Height="30"></RowDefinition>
-                        <RowDefinition Height="30"></RowDefinition>
-                        <RowDefinition Height="30"></RowDefinition>
-                        <RowDefinition Height="30"></RowDefinition>
-                        <RowDefinition Height="30"></RowDefinition>
-                        <RowDefinition Height="30"></RowDefinition>
-                        <RowDefinition Height="30"></RowDefinition>
-                        <RowDefinition Height="30"></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Label Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">A</Label>
-                    <Label Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">B</Label>
-                    <Label Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">C</Label>
-                    <Label Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">D</Label>
-                    <Label Grid.Row="4" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">E</Label>
-                    <Label Grid.Row="5" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">F</Label>
-                    <Label Grid.Row="6" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">G</Label>
-                    <Label Grid.Row="7" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">H</Label>
-                    <Label Grid.Row="8" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">I</Label>
-                    <Label Grid.Row="9" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15">J</Label>
-                </Grid>
-                <Grid x:Name="PlayerGuessBoxGrid" Width="300" Height="300" ShowGridLines="True" Background="#FFE0E0E0" Margin="0 0 5 5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="30"/>
-                        <ColumnDefinition Width="30"/>
-                        <ColumnDefinition Width="30"/>
-                        <ColumnDefinition Width="30"/>
-                        <ColumnDefinition Width="30"/>
-                        <ColumnDefinition Width="30"/>
-                        <ColumnDefinition Width="30"/>
-                        <ColumnDefinition Width="30"/>
-                        <ColumnDefinition Width="30"/>
-                        <ColumnDefinition Width="30"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="30"/>
-                        <RowDefinition Height="30"/>
-                    </Grid.RowDefinitions>
-                </Grid>
-            </StackPanel>            
-            <Button x:Name="btnSubmitAction" x:FieldModifier="public" Width="120" FontSize="16" Margin="5" IsEnabled="False">Submit action</Button>
+        <StackPanel x:Name="RegisterPanel" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Hidden">
+            <Label>Username</Label>
+            <TextBox x:Name="tbRegUsername" FontSize="20" Height="30" Width="200" Margin="0 0 0 10"></TextBox>
+            <Label>Email</Label>
+            <TextBox x:Name="tbRegEmail" FontSize="20" Height="30" Width="200" Margin="0 0 0 10"></TextBox>
+            <Label>Password</Label>
+            <PasswordBox x:Name="tbRegPassword" FontSize="20" Height="30" Width="200" Margin="0 0 0 10"></PasswordBox>
+            <Button x:Name="btnRegRegister" Height="30" Width="100" FontSize="15" Click="btnRegRegister_Click">Register</Button>
         </StackPanel>
-        <StackPanel x:Name="GameStatsBox" Grid.Column="2" Grid.Row="1" Margin="0 0 10 0">
-            <Label HorizontalAlignment="Center">Moves</Label>
-            <DataGrid>
+        <StackPanel x:Name="UserPanel" HorizontalAlignment="Center" Margin="10" Visibility="Hidden">
+            <DataGrid Height="300">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Player" Width="*"></DataGridTextColumn>
-                    <DataGridTextColumn Header="Computer" Width="*"></DataGridTextColumn>
+                    <DataGridTextColumn Header="User" Width="*"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Wins" Width="*"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Losses" Width="*"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Rank" Width="*"></DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
+            <Button Margin="30" FontSize="30" Height="50" Background="LimeGreen">Start game!</Button>
         </StackPanel>
     </Grid>
 </Window>

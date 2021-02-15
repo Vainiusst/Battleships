@@ -15,15 +15,10 @@ namespace Battleships.Business.Services
         public Player Player { get; set; }
         public Player ComputerPlayer { get; set; }
 
-        private TaskCompletionSource<Coordinate> Tcs { get; set; }
-        private Task<Coordinate> Task { get; set; }
-
-        public Game(Player player, Player computerPlayer, TaskCompletionSource<Coordinate> tcs, Task<Coordinate> task)
+        public Game(Player player, Player computerPlayer)
         {
             Player = player;
             ComputerPlayer = computerPlayer;
-            Tcs = tcs;
-            Task = task;
         }
 
         //private void StartGame()
@@ -40,21 +35,22 @@ namespace Battleships.Business.Services
         //        GameInitiate(whoStarts);
         //    }
         //}
-        public Round ComputerFirst(RandomShotService rss, Label lbl, Coordinate coord)
-        {
-            var move1 = FullComputerMove(rss, lbl);
-            var move2 = FullPlayerMove(coord, lbl);
 
-            return new Round(move2, move1);
-        }
+        //public Round ComputerFirst(RandomShotService rss, Label lbl, Coordinate coord)
+        //{
+        //    var move1 = FullComputerMove(rss, lbl);
+        //    var move2 = FullPlayerMove(coord, lbl);
 
-        public Round PlayerFirst(RandomShotService rss, Label lbl, Coordinate coord)
-        {
-            var move1 = FullPlayerMove(coord, lbl);
-            var move2 = FullComputerMove(rss, lbl);
+        //    return new Round(move2, move1);
+        //}
 
-            return new Round(move1, move2);
-        }
+        //public Round PlayerFirst(RandomShotService rss, Label lbl, Coordinate coord)
+        //{
+        //    var move1 = FullPlayerMove(coord, lbl);
+        //    var move2 = FullComputerMove(rss, lbl);
+
+        //    return new Round(move1, move2);
+        //}
 
         public Move FullPlayerMove(Coordinate coord, Label lbl)
         {
