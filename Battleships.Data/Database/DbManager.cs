@@ -1,10 +1,6 @@
 ﻿using Battleships.Data.Models;
 using Battleships.Data.Services;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Battleships.Data.Database
 {
@@ -15,11 +11,11 @@ namespace Battleships.Data.Database
             PassHashingService phs = new PassHashingService();
 
             string salt = phs.Salt();
-            string passwordToDb = phs.HashedPass(pass, salt);            
-            
-            using(var ctx = new MyDbContext())
+            string passwordToDb = phs.HashedPass(pass, salt);
+
+            using (var ctx = new MyDbContext())
             {
-                if(CheckIfUserUnique(username, email, ctx))
+                if (CheckIfUserUnique(username, email, ctx))
                 {
                     DbUser newUser = new DbUser { Username = username, Email = email, Password = passwordToDb, Salt = salt };
                     ctx.Users.Add(newUser);
@@ -33,7 +29,7 @@ namespace Battleships.Data.Database
 
         public static DbUser LoginUser(string username, string password)
         {
-            using(var ctx = new MyDbContext())
+            using (var ctx = new MyDbContext())
             {
                 var user = ctx.Users.Where(u => u.Username == username).FirstOrDefault();
 

@@ -8,7 +8,7 @@
         Title="Battleships" Height="450" Width="300"
         Background="LightSkyBlue">
     <Grid>
-        <StackPanel x:Name="LoginPanel" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Visible">
+        <StackPanel x:Name="LoginPanel" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Hidden">
             <Label>Username</Label>
             <TextBox x:Name="tbLoginUsername" FontSize="20" Height="30" Width="200" Margin="0 0 0 10"></TextBox>
             <Label>Password</Label>
@@ -17,7 +17,7 @@
             <Label x:Name="lblLoginInfo" Height="30" HorizontalAlignment="Center" Foreground="Red"></Label>
             <Button x:Name="btnRegisterLogin" Height="25" Width="80" FontSize="10" Click="btnRegisterLogin_Click">Register</Button>
         </StackPanel>
-        <StackPanel x:Name="RegisterPanel" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Hidden">
+        <StackPanel x:Name="RegisterPanel" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Visible">
             <StackPanel>
                 <Label>Username</Label>
                 <TextBox x:Name="tbRegUsername" FontSize="20" Height="30" Width="200" Margin="0 0 0 10"></TextBox>
@@ -27,7 +27,7 @@
                 <PasswordBox x:Name="tbRegPassword" FontSize="20" Height="30" Width="200" Margin="0 0 0 10"></PasswordBox>
                 <Button x:Name="btnRegRegister" Height="30" Width="100" FontSize="15" Click="btnRegRegister_Click">Register</Button>
             </StackPanel>
-            <Label x:Name="lblRegInfo" HorizontalAlignment="Center" Height="30" Foreground="Red"></Label>
+            <TextBlock x:Name="lblRegInfo" HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" Height="90" MaxWidth="200" Foreground="Red"></TextBlock>
         </StackPanel>
         <StackPanel x:Name="UserPanel" HorizontalAlignment="Center" Margin="10" Visibility="Hidden">
             <Label x:Name="lblUserGreeting" Height="30"></Label>

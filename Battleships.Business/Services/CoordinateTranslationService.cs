@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Battleships.Business.Services
 {
-    public static class CoordinateTranslationService
+    public class CoordinateTranslationService
     {
-        private readonly static Dictionary<int, string> coordToLetter = new Dictionary<int, string>
+        private readonly Dictionary<int, string> coordToLetter = new Dictionary<int, string>
         {
             { 0, "A" },
             { 1, "B" },
@@ -23,7 +23,7 @@ namespace Battleships.Business.Services
             { 9, "J" }
         };
 
-        public static string Translate(Coordinate coord)
+        public string Translate(Coordinate coord)
         {
             return $"{coordToLetter[coord.Row]}{coord.Column + 1}";
         }

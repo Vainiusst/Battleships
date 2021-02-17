@@ -16,6 +16,8 @@ namespace Battleships.Presentation.Services
     {
         public void FillWithButtons(Grid grid, GameGrid gameGrid, bool addContent, RoutedEventHandler eh)
         {
+            CoordinateTranslationService CTS = new CoordinateTranslationService();
+
             int x = gameGrid.Width;
             int y = gameGrid.Height;
 
@@ -27,7 +29,7 @@ namespace Battleships.Presentation.Services
                     btnToAdd.Name = $"bg{i}{j}";
                     btnToAdd.Height = 30;
                     btnToAdd.Width = 30;
-                    if (addContent) btnToAdd.Content = $"{CoordinateTranslationService.Translate(new Coordinate(i, j))}";
+                    if (addContent) btnToAdd.Content = $"{CTS.Translate(new Coordinate(i, j))}";
                     if (!addContent)
                     {
                         btnToAdd.Background = Brushes.LightGray;
