@@ -12,7 +12,7 @@ namespace Battleships.Data.Database
     {
         public MyDbContext() : base("BattleshipsDB")
         {
-            System.Data.Entity.Database.SetInitializer(new ContextInitializer());
+            System.Data.Entity.Database.SetInitializer<MyDbContext>(new CreateDatabaseIfNotExists<MyDbContext>());
         }
 
         public DbSet<DbUser> Users { get; set; }

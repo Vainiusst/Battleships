@@ -9,11 +9,11 @@ namespace Battleships.Data.Models
     {
         [Key]
         public int GameId { get; set; }
-        [ForeignKey("UserId")]
         public int UserId { get; set; }
         public DateTime GameTime { get; set; }
         public string GameMoves { get; set; }
 
+        [ForeignKey("UserId")]
         public virtual DbUser User { get; set; }
     }
 }

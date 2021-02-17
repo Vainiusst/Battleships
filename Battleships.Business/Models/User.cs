@@ -8,15 +8,17 @@ namespace Battleships.Business.Models
 {
     public class User
     {
+        public int UserId { get; }
         public string Name { get; }
         public int Wins { get; set; }
         public int Losses { get; set; }
 
-        //public User()
-        //{
-        //    Name = name;
-        //    Wins = 0;
-        //    Losses = 0;
-        //}
+        public User(int userId, string name)
+        {
+            UserId = userId;
+            Name = name;
+            Wins = 0;
+            Losses = 0;
+        }
     }
 }

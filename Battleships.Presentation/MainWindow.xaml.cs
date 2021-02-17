@@ -9,6 +9,8 @@ using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Battleships.Presentation.Controls;
+using Battleships.Data.Database;
+using Battleships.Data.Models;
 
 namespace Battleships.Presentation
 {
@@ -16,10 +18,11 @@ namespace Battleships.Presentation
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
-    {     
+    {
+        public User User { get; set; }
         public MainWindow()
         {
-            InitializeComponent();            
+            InitializeComponent();
         }
 
         //private void Login()
@@ -47,12 +50,41 @@ namespace Battleships.Presentation
 
         private void btnLoginLogin_Click(object sender, RoutedEventArgs e)
         {
-            //Login();
+            btnLoginLogin.BorderBrush = (Brush)(new BrushConverter().ConvertFrom("#FF707070"));
+
+
+            var user = DbManager.LoginUser(tbLoginUsername.Text, tbLoginPassword.Password.ToString());
+
+            if (user != null)
+            {
+                LoginPanel.Visibility = Visibility.Hidden;
+                UserPanel.Visibility = Visibility.Visible;
+                lblUserGreeting.Content = $"Hello, {user.Username}!";
+            }
+            else
+            {
+                btnLoginLogin.BorderBrush = Brushes.Red;
+                lblLoginInfo.Content = "No such user in the database!";
+            }
         }
 
         private void btnRegRegister_Click(object sender, RoutedEventArgs e)
         {
-            //Register();
+            btnRegRegister.BorderBrush = (Brush)(new BrushConverter().ConvertFrom("#FF707070"));
+
+            DbUser regUser = DbManager.RegisterUser(tbRegUsername.Text, tbRegEmail.Text, tbRegPassword.Password.ToString());
+
+            if (regUser != null)
+            {
+                RegisterPanel.Visibility = Visibility.Hidden;
+                UserPanel.Visibility = Visibility.Visible;
+                lblUserGreeting.Content = $"Hello, {regUser.Username}!";
+            }
+            else
+            {
+                btnRegRegister.BorderBrush = Brushes.Red;
+                lblRegInfo.Content = "Such user already exists in the database.";
+            }
         }
     }
 }

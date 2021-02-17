@@ -19,10 +19,10 @@ namespace Battleships.Presentation
         private TaskCompletionSource<Coordinate> ClickSomewhere { get; set; }
         private Task<Coordinate> ClickSomewhereTask { get; set; }
         private Orientation ShipOrientation { get; set; }
-        public GameWindow()
+        public GameWindow(User user)
         {
-            Player PlayerPC = new Player();
-            Player Player = new Player();
+            Player PlayerPC = new Player(new User(0, "Computer"));
+            Player Player = new Player(user);
 
             ShipOrientation = Orientation.Horizontal; //Default orientation is horizontal
 

@@ -14,19 +14,24 @@
             <Label>Password</Label>
             <PasswordBox x:Name="tbLoginPassword" FontSize="20" Height="30" Width="200" Margin="0 0 0 10"></PasswordBox>
             <Button x:Name="btnLoginLogin" Height="30" Width="100" FontSize="15" Click="btnLoginLogin_Click">Login</Button>
-            <Button x:Name="btnRegisterLogin" Height="25" Width="80" FontSize="10" Margin="0 20 0 0" Click="btnRegisterLogin_Click">Register</Button>
+            <Label x:Name="lblLoginInfo" Height="30" HorizontalAlignment="Center" Foreground="Red"></Label>
+            <Button x:Name="btnRegisterLogin" Height="25" Width="80" FontSize="10" Click="btnRegisterLogin_Click">Register</Button>
         </StackPanel>
         <StackPanel x:Name="RegisterPanel" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Hidden">
-            <Label>Username</Label>
-            <TextBox x:Name="tbRegUsername" FontSize="20" Height="30" Width="200" Margin="0 0 0 10"></TextBox>
-            <Label>Email</Label>
-            <TextBox x:Name="tbRegEmail" FontSize="20" Height="30" Width="200" Margin="0 0 0 10"></TextBox>
-            <Label>Password</Label>
-            <PasswordBox x:Name="tbRegPassword" FontSize="20" Height="30" Width="200" Margin="0 0 0 10"></PasswordBox>
-            <Button x:Name="btnRegRegister" Height="30" Width="100" FontSize="15" Click="btnRegRegister_Click">Register</Button>
+            <StackPanel>
+                <Label>Username</Label>
+                <TextBox x:Name="tbRegUsername" FontSize="20" Height="30" Width="200" Margin="0 0 0 10"></TextBox>
+                <Label>Email</Label>
+                <TextBox x:Name="tbRegEmail" FontSize="20" Height="30" Width="200" Margin="0 0 0 10"></TextBox>
+                <Label>Password</Label>
+                <PasswordBox x:Name="tbRegPassword" FontSize="20" Height="30" Width="200" Margin="0 0 0 10"></PasswordBox>
+                <Button x:Name="btnRegRegister" Height="30" Width="100" FontSize="15" Click="btnRegRegister_Click">Register</Button>
+            </StackPanel>
+            <Label x:Name="lblRegInfo" HorizontalAlignment="Center" Height="30" Foreground="Red"></Label>
         </StackPanel>
         <StackPanel x:Name="UserPanel" HorizontalAlignment="Center" Margin="10" Visibility="Hidden">
-            <DataGrid Height="300">
+            <Label x:Name="lblUserGreeting" Height="30"></Label>
+            <DataGrid Height="280">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="User" Width="*"></DataGridTextColumn>
                     <DataGridTextColumn Header="Wins" Width="*"></DataGridTextColumn>
