@@ -175,5 +175,11 @@ namespace Battleships.Presentation
             CurrentUser = null;
             LoginPanel.Visibility = Visibility.Visible;
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var game = new GameWindow(CurrentUser);
+            game.Show();
+        }
     }
 }

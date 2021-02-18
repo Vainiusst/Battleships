@@ -2,6 +2,7 @@
 using Battleships.Business.Services;
 using Battleships.Presentation.Controls;
 using Battleships.Presentation.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,21 +20,51 @@ namespace Battleships.Presentation
         private TaskCompletionSource<Coordinate> ClickSomewhere { get; set; }
         private Task<Coordinate> ClickSomewhereTask { get; set; }
         private Orientation ShipOrientation { get; set; }
+        private Game CurrentGame { get; set; }
+        public Player PlayerPC { get; set; }
+        public Player PlayerHum { get; set; }
         public GameWindow(User user)
         {
-            Player PlayerPC = new Player(new User(0, "Computer"));
-            Player Player = new Player(user);
+            InitializeComponent();
+
+            PlayerPC = new Player(new User(0, "Computer"));
+            PlayerHum = new Player(user);
 
             ShipOrientation = Orientation.Horizontal; //Default orientation is horizontal
 
-            InitializeComponent();
             PrepareComputerForGame(PlayerPC);
-            PreparePlayerForGame(Player);
+            PreparePlayerForGame(PlayerHum);
+
+            CurrentGame = new Game(PlayerHum, PlayerPC);
+            InitiateGame();
+        }
+
+        public void InitiateGame()
+        {
+            var playerToStart = CoinToss.Toss();
+            if(playerToStart == 0)
+            {
+                MessageBox.Show($"{PlayerHum.Name} starts first!");
+                while (PlayerHum.Ships.Count > 0 || PlayerPC.Ships.Count > 0)
+                {
+                    PlayersShot();
+                    CurrentGame.FullComputerMove(InfoLabel);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Computer starts first!");
+                while (PlayerHum.Ships.Count > 0 || PlayerPC.Ships.Count > 0)
+                {
+                    CurrentGame.FullComputerMove(InfoLabel);
+                    PlayersShot();
+                }
+            }
         }
 
         private void PrepareComputerForGame(Player pc)
         {
-            var rsps = new RandomShipPlacementService(pc.Grid.Height, pc.Grid.Width, new System.Random());
+            var rsps = new RandomShipPlacementService(pc.Grid.Height, pc.Grid.Width, new Random());
             SetComputerShips(pc, rsps);
         }
 
@@ -67,6 +98,12 @@ namespace Battleships.Presentation
             PlayerButtonsPanel.Children.Clear();
             InfoLabel.Content = null;
             GenerateStartButton();
+        }
+
+        private async void PlayersShot()
+        {
+            Coordinate shootingCoord = await UserClickedOnCoordinateBoard();
+            CurrentGame.FullPlayerMove(shootingCoord, InfoLabel);
         }
 
         private void SetComputerShips(Player p, RandomShipPlacementService rsps)

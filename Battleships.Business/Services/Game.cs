@@ -1,5 +1,6 @@
 ﻿using Battleships.Business.Models;
 using Battleships.Business.Models.GameModels;
+using System;
 using System.Linq;
 using System.Text;
 using System.Windows.Controls;
@@ -11,12 +12,14 @@ namespace Battleships.Business.Services
         public Player Player { get; set; }
         public Player ComputerPlayer { get; set; }
         public CoordinateTranslationService CTS { get; set; }
+        public RandomShotService RSS { get; set; }
 
         public Game(Player player, Player computerPlayer)
         {
             Player = player;
             ComputerPlayer = computerPlayer;
             CTS = new CoordinateTranslationService();
+            RSS = new RandomShotService(ComputerPlayer, new Random());
         }
 
         public Move FullPlayerMove(Coordinate coord, Label lbl)
@@ -27,9 +30,9 @@ namespace Battleships.Business.Services
             return returnMv;
         }
 
-        public Move FullComputerMove(RandomShotService rss, Label lbl)
+        public Move FullComputerMove(Label lbl)
         {
-            var returnMv = ComputerMove(rss);
+            var returnMv = ComputerMove();
             OutputTheHit(lbl, returnMv, ComputerPlayer);
 
             return returnMv;
@@ -41,9 +44,9 @@ namespace Battleships.Business.Services
             return new Move(shootingCoord, CTS.Translate(shootingCoord));
         }
 
-        public Move ComputerMove(RandomShotService rss)
+        public Move ComputerMove()
         {
-            var shootingCoord = rss.Shoot();
+            var shootingCoord = RSS.Shoot();
             ComputerPlayer.ShotsTaken.Add(shootingCoord);
             return new Move(shootingCoord, CTS.Translate(shootingCoord));
         }

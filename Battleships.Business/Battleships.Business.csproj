@@ -45,7 +45,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Services\CoinToss.cs" />
-    <Compile Include="Models\ComputerPlayer.cs" />
     <Compile Include="Models\Coordinate.cs" />
     <Compile Include="Models\GameGrid.cs" />
     <Compile Include="Models\GameModels\Move.cs" />

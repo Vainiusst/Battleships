@@ -43,7 +43,7 @@
                     <Button x:Name="btnLogOut" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Height="25" Width="50" Click="btnLogOut_Click">Log out</Button>
                 </Grid>
             </StackPanel>
-            <DataGrid x:Name="ScoreGrid" Height="280" AutoGenerateColumns="False" VerticalScrollBarVisibility="Auto">
+            <DataGrid x:Name="ScoreGrid" IsReadOnly="True" Height="280" AutoGenerateColumns="False" VerticalScrollBarVisibility="Auto">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="User" Binding="{Binding Name}" Width="*"></DataGridTextColumn>
                     <DataGridTextColumn Header="Wins" Binding="{Binding Wins}" Width="*"></DataGridTextColumn>
@@ -51,7 +51,7 @@
                     <DataGridTextColumn Header="Rank" Binding="{Binding Rank}" Width="*"></DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
-            <Button Margin="20" FontSize="30" Height="50" Background="LimeGreen">Start game!</Button>
+            <Button Margin="20" FontSize="30" Height="50" Background="LimeGreen" Click="Button_Click">Start game!</Button>
         </StackPanel>
     </Grid>
 </Window>
