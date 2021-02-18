@@ -2,17 +2,13 @@
 using Battleships.Business.Services;
 using Battleships.Presentation.Controls;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace Battleships.Presentation.Services
 {
-    public class ButtonFillingService
+    public class ButtonFillingService : IButtonFillingService
     {
         public void FillWithButtons(Grid grid, GameGrid gameGrid, bool addContent, RoutedEventHandler eh)
         {

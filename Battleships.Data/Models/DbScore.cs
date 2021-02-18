@@ -10,7 +10,6 @@ namespace Battleships.Data.Models
         public int UserId { get; set; }
         public int Wins { get; set; }
         public int Losses { get; set; }
-        [NotMapped]
         public int Rank => Wins - Losses;
 
         [ForeignKey("UserId")]

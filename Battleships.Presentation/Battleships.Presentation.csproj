@@ -73,6 +73,8 @@
       <DependentUpon>GameWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Services\ButtonFillingService.cs" />
+    <Compile Include="Services\IButtonFillingService.cs" />
+    <Compile Include="Services\IInputCheckingService.cs" />
     <Compile Include="Services\InputCheckingService.cs" />
     <Page Include="GameWindow.xaml">
       <SubType>Designer</SubType>

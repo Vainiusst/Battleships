@@ -18,7 +18,9 @@ namespace Battleships.Data.Database
                 if (CheckIfUserUnique(username, email, ctx))
                 {
                     DbUser newUser = new DbUser { Username = username, Email = email, Password = passwordToDb, Salt = salt };
+                    DbScore newScore = new DbScore { User = newUser, Wins = 0, Losses = 0 };
                     ctx.Users.Add(newUser);
+                    ctx.Scores.Add(newScore);
                     ctx.SaveChanges();
                     return newUser;
                 }

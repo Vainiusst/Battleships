@@ -4,10 +4,12 @@ using System.Text.RegularExpressions;
 
 namespace Battleships.Presentation.Services
 {
-    public class InputCheckingService
+    public class InputCheckingService : IInputCheckingService
     {
         public bool UsernameCheck(string username)
         {
+            //Username should be between 1-20 charcters long
+            //and may contain any alphanumeric characters, "-", "_" or ".".
             Regex rx = new Regex(@"^[\w\.\-]{1,20}$");
             return rx.IsMatch(username);
         }
@@ -27,6 +29,8 @@ namespace Battleships.Presentation.Services
 
         public bool PasswordCheck(string pass)
         {
+            //Pasword must be at least 8 characters long and must contain 
+            //at least 1 lowercase letter, 1 uppercase leter and 1 digit.
             Regex rx = new Regex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[\w]{8,}$");
             return rx.IsMatch(pass);
         }
