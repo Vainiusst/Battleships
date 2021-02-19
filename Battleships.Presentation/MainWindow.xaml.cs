@@ -176,7 +176,7 @@ namespace Battleships.Presentation
             LoginPanel.Visibility = Visibility.Visible;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void btnUserStartGame_Click(object sender, RoutedEventArgs e)
         {
             var game = new GameWindow(CurrentUser);
             game.Show();

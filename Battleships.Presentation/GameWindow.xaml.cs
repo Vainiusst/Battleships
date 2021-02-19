@@ -18,7 +18,6 @@ namespace Battleships.Presentation
     public partial class GameWindow : Window
     {
         private TaskCompletionSource<Coordinate> ClickSomewhere { get; set; }
-        private Task<Coordinate> ClickSomewhereTask { get; set; }
         private Orientation ShipOrientation { get; set; }
         private Game CurrentGame { get; set; }
         public Player PlayerPC { get; set; }
@@ -34,20 +33,22 @@ namespace Battleships.Presentation
 
             PrepareComputerForGame(PlayerPC);
             PreparePlayerForGame(PlayerHum);
-
-            CurrentGame = new Game(PlayerHum, PlayerPC);
-            InitiateGame();
+            PopulateButtonsWithEH();
         }
 
         public void InitiateGame()
         {
+            CurrentGame = new Game(PlayerHum, PlayerPC);
             var playerToStart = CoinToss.Toss();
-            if(playerToStart == 0)
+
+            if (playerToStart == 0)
             {
                 MessageBox.Show($"{PlayerHum.Name} starts first!");
                 while (PlayerHum.Ships.Count > 0 || PlayerPC.Ships.Count > 0)
                 {
-                    PlayersShot();
+                    AddInfoLabel.Content = $"Waiting for the {PlayerHum.Name}'s move.";
+                    var t = Task.Run(() => PlayersShot());
+                    t.Wait();
                     CurrentGame.FullComputerMove(InfoLabel);
                 }
             }
@@ -57,7 +58,9 @@ namespace Battleships.Presentation
                 while (PlayerHum.Ships.Count > 0 || PlayerPC.Ships.Count > 0)
                 {
                     CurrentGame.FullComputerMove(InfoLabel);
-                    PlayersShot();
+                    AddInfoLabel.Content = $"Waiting for the {PlayerHum.Name}'s move.";
+                    var t = Task.Run(() => PlayersShot());
+                    t.Wait();
                 }
             }
         }
@@ -74,9 +77,9 @@ namespace Battleships.Presentation
             var bfs = new ButtonFillingService();
 
             ClickSomewhere = new TaskCompletionSource<Coordinate>();
-            ClickSomewhereTask = ClickSomewhere.Task;
 
             bool[] ShouldHaveContent = new bool[] { true, false };
+
             bfs.FillWithButtons(PlayerBoxGrid, player.Grid, ShouldHaveContent[1], SetShipClick);
             bfs.FillWithButtons(PlayerGuessBoxGrid, player.GuessGrid, ShouldHaveContent[0], null);
 
@@ -91,7 +94,6 @@ namespace Battleships.Presentation
                 InfoLabel.Content = $"Setting the coordinates for ship of size {theShip.Size}";
                 Coordinate coordToUse = await UserClickedOnCoordinateBoard();
                 sps.PlaceShip(ShipOrientation, coordToUse, theShip);
-
                 ColourTheShip(theShip.Placement);
             }
 
@@ -102,7 +104,7 @@ namespace Battleships.Presentation
 
         private async void PlayersShot()
         {
-            Coordinate shootingCoord = await UserClickedOnCoordinateBoard();
+            var shootingCoord = await UserClickedOnCoordinateBoard();
             CurrentGame.FullPlayerMove(shootingCoord, InfoLabel);
         }
 
@@ -120,7 +122,7 @@ namespace Battleships.Presentation
             if (ClickSomewhere != null)
             {
                 ButtonExtended btn = (ButtonExtended)sender;
-                ClickSomewhere.TrySetResult(btn.Coordinate);
+                ClickSomewhere.SetResult(btn.Coordinate);
                 ClickSomewhere = null;
             }
         }
@@ -128,7 +130,7 @@ namespace Battleships.Presentation
         private async Task<Coordinate> UserClickedOnCoordinateBoard()
         {
             ClickSomewhere = new TaskCompletionSource<Coordinate>();
-            return await ClickSomewhere.Task;
+            return await ClickSomewhere.Task; //<--- Something happens here
         }
 
         private void ColourTheShip(List<Coordinate> coords)
@@ -142,17 +144,31 @@ namespace Battleships.Presentation
 
             foreach (Coordinate coord in coords)
             {
-                var btn = btns.FirstOrDefault(b => b.Coordinate.Equals(coord));
+                var btn = btns.FirstOrDefault(b => b.Coordinate.Equals(coord, b.Coordinate));
 
                 btn.Opacity = 1;
                 btn.Background = Brushes.Gray;
             }
         }
 
+        private void PopulateButtonsWithEH()
+        {
+            foreach(ButtonExtended btn in PlayerGuessBoxGrid.Children)
+            {
+                btn.Click += SetShipClick;
+            }
+        }
+
+        private void Launcher(object sender, RoutedEventArgs e)
+        {
+            InitiateGame();
+        }
+
         private void GenerateStartButton()
         {
             var btn = new StartGameButton();
             btn.Click += btnStartGame_Click;
+            btn.Click += Launcher;
             PlayerButtonsPanel.Children.Add(btn);
         }
 

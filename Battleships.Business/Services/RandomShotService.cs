@@ -9,7 +9,7 @@ namespace Battleships.Business.Services
 {
     public class RandomShotService : IRandomShotService
     {
-        public Player Player { get; }
+        public Player Player { get; set; }
         public Random Rand { get; set; }
 
         public RandomShotService(Player player, Random rand)
@@ -20,7 +20,7 @@ namespace Battleships.Business.Services
 
         public Coordinate Shoot()
         {
-            var shotToTake = RandomCoord();
+            Coordinate shotToTake = RandomCoord();
 
             if (!Player.ShotsTaken.Contains(shotToTake))
             {
@@ -35,8 +35,8 @@ namespace Battleships.Business.Services
 
         private Coordinate RandomCoord()
         {
-            var maxColumn = Player.Grid.Width;
-            var maxRow = Player.Grid.Height;
+            int maxColumn = Player.Grid.Width;
+            int maxRow = Player.Grid.Height;
 
             return new Coordinate(Rand.Next(maxColumn), Rand.Next(maxRow));
         }

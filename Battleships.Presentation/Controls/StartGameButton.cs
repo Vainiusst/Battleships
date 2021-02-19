@@ -14,7 +14,7 @@ namespace Battleships.Presentation.Controls
     {
         public StartGameButton()
         {
-            this.Content = "Start game!";
+            this.Content = "Begin the game!";
             this.FontSize = 20;
             this.Width = 150;
             this.Background = Brushes.LimeGreen;

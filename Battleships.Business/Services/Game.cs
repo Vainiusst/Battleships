@@ -25,7 +25,7 @@ namespace Battleships.Business.Services
         public Move FullPlayerMove(Coordinate coord, Label lbl)
         {
             var returnMv = PlayerMove(coord);
-            OutputTheHit(lbl, returnMv, Player);
+            OutputTheHit(lbl, returnMv, Player, ComputerPlayer);
 
             return returnMv;
         }
@@ -33,7 +33,7 @@ namespace Battleships.Business.Services
         public Move FullComputerMove(Label lbl)
         {
             var returnMv = ComputerMove();
-            OutputTheHit(lbl, returnMv, ComputerPlayer);
+            OutputTheHit(lbl, returnMv, ComputerPlayer, Player);
 
             return returnMv;
         }
@@ -47,7 +47,6 @@ namespace Battleships.Business.Services
         public Move ComputerMove()
         {
             var shootingCoord = RSS.Shoot();
-            ComputerPlayer.ShotsTaken.Add(shootingCoord);
             return new Move(shootingCoord, CTS.Translate(shootingCoord));
         }
 
@@ -70,13 +69,13 @@ namespace Battleships.Business.Services
             return -1;
         }
 
-        public void OutputTheHit(Label lbl, Move mv, Player plr)
+        public void OutputTheHit(Label lbl, Move mv, Player plr, Player opponent)
         {
             StringBuilder outputString = new StringBuilder($"{plr.Name} fired at square {mv.MoveStr}. ");
 
-            if (IsHit(plr, mv.MoveCoord))
+            if (IsHit(opponent, mv.MoveCoord))
             {
-                outputString.Append($"The shot hit a ship of size {FindShipSize(plr, mv.MoveCoord)}");
+                outputString.Append($"The shot hit a ship of size {FindShipSize(opponent, mv.MoveCoord)}");
             }
             else
             {

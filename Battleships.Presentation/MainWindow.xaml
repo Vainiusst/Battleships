@@ -51,7 +51,7 @@
                     <DataGridTextColumn Header="Rank" Binding="{Binding Rank}" Width="*"></DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
-            <Button Margin="20" FontSize="30" Height="50" Background="LimeGreen" Click="Button_Click">Start game!</Button>
+            <Button x:Name="btnUserStartGame" Margin="20" FontSize="30" Height="50" Background="LimeGreen" Click="btnUserStartGame_Click">Start game!</Button>
         </StackPanel>
     </Grid>
 </Window>

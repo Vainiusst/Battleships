@@ -101,6 +101,7 @@
                 <Button x:Name="btnVertical" Width="75" Margin="5 0 0 0" Click="btnVertical_Click">Vertical</Button>
             </StackPanel>
             <Label x:Name="InfoLabel" HorizontalAlignment="Center"></Label>
+            <Label x:Name="AddInfoLabel" HorizontalAlignment="Center"></Label>
         </StackPanel>
         <StackPanel x:Name="PlayerGuessBox" Grid.Column="1" Grid.Row="1">
             <Label HorizontalAlignment="Center">Oponent's ships</Label>
