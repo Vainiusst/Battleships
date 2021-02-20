@@ -25,7 +25,11 @@ namespace Battleships.Presentation.Services
                     btnToAdd.Name = $"bg{i}{j}";
                     btnToAdd.Height = 30;
                     btnToAdd.Width = 30;
-                    if (addContent) btnToAdd.Content = $"{CTS.Translate(new Coordinate(i, j))}";
+                    if (addContent)
+                    {
+                        btnToAdd.Content = $"{CTS.Translate(new Coordinate(i, j))}";
+                        btnToAdd.IsEnabled = false;
+                    }
                     if (!addContent)
                     {
                         btnToAdd.Background = Brushes.LightGray;
@@ -36,6 +40,15 @@ namespace Battleships.Presentation.Services
                     Grid.SetRow(btnToAdd, j);
                     grid.Children.Add(btnToAdd);
                 }
+            }
+        }
+
+        public void AddHandlerAndEnableButtons(UIElementCollection gridChildren, RoutedEventHandler eh)
+        {
+            foreach (ButtonExtended btn in gridChildren)
+            {
+                btn.IsEnabled = true;
+                btn.Click += eh;
             }
         }
     }

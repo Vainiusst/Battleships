@@ -76,6 +76,8 @@
     <Compile Include="Services\IButtonFillingService.cs" />
     <Compile Include="Services\IInputCheckingService.cs" />
     <Compile Include="Services\InputCheckingService.cs" />
+    <Compile Include="Services\IPreparationForGameService.cs" />
+    <Compile Include="Services\PreparationForGameService.cs" />
     <Page Include="GameWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
