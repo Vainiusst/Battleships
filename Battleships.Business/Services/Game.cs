@@ -82,7 +82,7 @@ namespace Battleships.Business.Services
                 outputString.Append("The shot missed.");
             }
 
-            Application.Current.Dispatcher.Invoke(() => lbl.Content = outputString.ToString());
+            lbl.Content = outputString.ToString();
         }
     }
 }

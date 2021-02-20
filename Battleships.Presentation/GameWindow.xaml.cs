@@ -19,8 +19,9 @@ namespace Battleships.Presentation
     public partial class GameWindow : Window
     {
         private TaskCompletionSource<Coordinate> CoordinateTask { get; set; }
-        private PreparationForGameService PFGS { get; set; }
         private TaskCompletionSource<Move> MoveTask { get; set; }
+        private PreparationForGameService PFGS { get; set; }
+        private HitColouringService HCS { get; set; }
         private Game CurrentGame { get; set; }
         public Player PlayerPC { get; set; }
         public Player PlayerHum { get; set; }
@@ -44,6 +45,7 @@ namespace Battleships.Presentation
         public async void InitiateGame()
         {
             CurrentGame = new Game(PlayerHum, PlayerPC);
+            HCS = new HitColouringService(CurrentGame, this);
             var playerToStart = CoinToss.Toss();
 
             if (playerToStart == CoinToss.Players.Player)
@@ -67,11 +69,13 @@ namespace Battleships.Presentation
         public async Task PCFirst()
         {
             var pcMove = CurrentGame.FullComputerMove(PCShotInfo);
-            Rounds.Add(new Round(null, pcMove));            
+            HCS.ColourButton(PlayerPC, pcMove.MoveCoord);
+            Rounds.Add(new Round(null, pcMove));
             MovesGrid.Items.Refresh();
             AddInfoLabel.Content = $"Waiting for the {PlayerHum.Name}'s move.";
             var plrMove = await PlayersShot();
             MoveTask = null;
+            HCS.ColourButton(PlayerHum, plrMove.MoveCoord);
             Rounds.Last().PlayerMove = plrMove;
             MovesGrid.Items.Refresh();
             AddInfoLabel.Content = "";
@@ -81,11 +85,13 @@ namespace Battleships.Presentation
         {
             AddInfoLabel.Content = $"Waiting for the {PlayerHum.Name}'s move.";
             var plrMove = await PlayersShot();
+            MoveTask = null;
+            HCS.ColourButton(PlayerHum, plrMove.MoveCoord);
             Rounds.Add(new Round(plrMove, null));
             MovesGrid.Items.Refresh();
             AddInfoLabel.Content = "";
             var pcMove = CurrentGame.FullComputerMove(PCShotInfo);
-            MoveTask = null;
+            HCS.ColourButton(PlayerPC, pcMove.MoveCoord);
             Rounds.Last().ComputerMove = pcMove;
             MovesGrid.Items.Refresh();
         }
