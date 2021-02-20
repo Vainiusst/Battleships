@@ -4,7 +4,6 @@ using Battleships.Presentation.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -68,7 +67,7 @@ namespace Battleships.Presentation.Services
             while (p.Ships.Count > sps.OccupiedCoordinates.Count)
             {
                 var theShip = p.Ships[sps.OccupiedCoordinates.Count];
-                GW.PCShotInfo.Content = $"Setting the coordinates for ship of size {theShip.Size}";
+                GW.PCShotInfo.Text = $"Setting the coordinates for ship of size {theShip.Size}";
                 Coordinate coordToUse = await GW.UserClickedOnCoordinateBoard();
                 CoordinateTask = null;
                 sps.PlaceShip(ShipOrientation, coordToUse, theShip);
@@ -76,7 +75,7 @@ namespace Battleships.Presentation.Services
             }
 
             GW.PlayerButtonsPanel.Children.Clear();
-            GW.PCShotInfo.Content = null;
+            GW.PCShotInfo.Text = null;
             GenerateStartButton();
         }
 

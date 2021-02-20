@@ -21,7 +21,7 @@ namespace Battleships.Presentation
         private TaskCompletionSource<Coordinate> CoordinateTask { get; set; }
         private TaskCompletionSource<Move> MoveTask { get; set; }
         private PreparationForGameService PFGS { get; set; }
-        private HitColouringService HCS { get; set; }
+        private HitOutputService HOS { get; set; }
         private Game CurrentGame { get; set; }
         public Player PlayerPC { get; set; }
         public Player PlayerHum { get; set; }
@@ -31,6 +31,8 @@ namespace Battleships.Presentation
         public GameWindow(User user)
         {
             InitializeComponent();
+
+            MoveTask = null;
 
             Rounds = new List<Round>();
             MovesGrid.ItemsSource = Rounds;
@@ -45,13 +47,13 @@ namespace Battleships.Presentation
         public async void InitiateGame()
         {
             CurrentGame = new Game(PlayerHum, PlayerPC);
-            HCS = new HitColouringService(CurrentGame, this);
+            HOS = new HitOutputService(CurrentGame, this);
             var playerToStart = CoinToss.Toss();
 
             if (playerToStart == CoinToss.Players.Player)
             {
                 MessageBox.Show($"{PlayerHum.Name} starts first!");
-                while (PlayerHum.Ships.Count > 0 && PlayerPC.Ships.Count > 0)
+                while (PlayerHum.Ships.Any(s => !s.IsSunk) && PlayerPC.Ships.Any(s => !s.IsSunk))
                 {
                     await PlayerFirst();
                 }
@@ -59,7 +61,7 @@ namespace Battleships.Presentation
             else
             {
                 MessageBox.Show("Computer starts first!");
-                while (PlayerHum.Ships.Count > 0 && PlayerPC.Ships.Count > 0)
+                while (PlayerHum.Ships.Any(s => !s.IsSunk) && PlayerPC.Ships.Any(s => !s.IsSunk))
                 {
                     await PCFirst();
                 }
@@ -68,14 +70,14 @@ namespace Battleships.Presentation
 
         public async Task PCFirst()
         {
-            var pcMove = CurrentGame.FullComputerMove(PCShotInfo);
-            HCS.ColourButton(PlayerPC, pcMove.MoveCoord);
+            var pcMove = CurrentGame.ComputerMove();
+            HOS.OutputTheHit(PCShotInfo, pcMove, PlayerPC, PlayerHum);
             Rounds.Add(new Round(null, pcMove));
             MovesGrid.Items.Refresh();
             AddInfoLabel.Content = $"Waiting for the {PlayerHum.Name}'s move.";
             var plrMove = await PlayersShot();
             MoveTask = null;
-            HCS.ColourButton(PlayerHum, plrMove.MoveCoord);
+            HOS.OutputTheHit(PlayerShotInfo, plrMove, PlayerHum, PlayerPC);
             Rounds.Last().PlayerMove = plrMove;
             MovesGrid.Items.Refresh();
             AddInfoLabel.Content = "";
@@ -86,12 +88,12 @@ namespace Battleships.Presentation
             AddInfoLabel.Content = $"Waiting for the {PlayerHum.Name}'s move.";
             var plrMove = await PlayersShot();
             MoveTask = null;
-            HCS.ColourButton(PlayerHum, plrMove.MoveCoord);
+            HOS.OutputTheHit(PlayerShotInfo, plrMove, PlayerHum, PlayerPC);
             Rounds.Add(new Round(plrMove, null));
             MovesGrid.Items.Refresh();
             AddInfoLabel.Content = "";
-            var pcMove = CurrentGame.FullComputerMove(PCShotInfo);
-            HCS.ColourButton(PlayerPC, pcMove.MoveCoord);
+            var pcMove = CurrentGame.ComputerMove();
+            HOS.OutputTheHit(PCShotInfo, pcMove, PlayerPC, PlayerHum);
             Rounds.Last().ComputerMove = pcMove;
             MovesGrid.Items.Refresh();
         }
@@ -101,7 +103,7 @@ namespace Battleships.Presentation
             var shootingCoord = await UserClickedOnCoordinateBoard();
             CoordinateTask = null;
             MoveTask = new TaskCompletionSource<Move>();
-            var move = CurrentGame.FullPlayerMove(shootingCoord, PlayerShotInfo);
+            var move = CurrentGame.PlayerMove(shootingCoord);
             MoveTask.SetResult(move);
             return MoveTask.Task.Result;
         }
