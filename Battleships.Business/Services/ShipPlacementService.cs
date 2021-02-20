@@ -58,6 +58,7 @@ namespace Battleships.Business.Services
                 for (int i = 0; i < ship.Size; i++)
                 {
                     Coordinate newCoord = new Coordinate(coord.Column + i, coord.Row);
+                    if (CoordinateValidator(newCoord).ToList().Count == 0) return;
                     coords.AddRange(CoordinateValidator(newCoord).ToList());
                 }
             }
@@ -66,6 +67,7 @@ namespace Battleships.Business.Services
                 for (int i = 0; i < ship.Size; i++)
                 {
                     Coordinate newCoord = new Coordinate(coord.Column - i, coord.Row);
+                    if (CoordinateValidator(newCoord).ToList().Count == 0) return;
                     coords.AddRange(CoordinateValidator(newCoord).ToList());
                 }
             }
@@ -82,6 +84,7 @@ namespace Battleships.Business.Services
                 for (int i = 0; i < ship.Size; i++)
                 {
                     Coordinate newCoord = new Coordinate(coord.Column, coord.Row + i);
+                    if (CoordinateValidator(newCoord).ToList().Count == 0) return;
                     coords.AddRange(CoordinateValidator(newCoord));
                 }
             }
@@ -90,6 +93,7 @@ namespace Battleships.Business.Services
                 for (int i = 0; i < ship.Size; i++)
                 {
                     Coordinate newCoord = new Coordinate(coord.Column, coord.Row - i);
+                    if (CoordinateValidator(newCoord).ToList().Count == 0) return;
                     coords.AddRange(CoordinateValidator(newCoord));
                 }
             }
@@ -101,7 +105,7 @@ namespace Battleships.Business.Services
         {
             List<Coordinate> returnCoords = new List<Coordinate>();
 
-            if (!OccupiedCoordinates.Any(l => l.Contains(coord)))
+            if (!OccupiedCoordinates.Any(l => l.Any(c => c.Equals(coord, c))))
             {
                 returnCoords.Add(coord);
                 return returnCoords;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Battleships.Business.Models
 {
-    public class Coordinate : IEqualityComparer<Coordinate>, IEquatable<Coordinate>
+    public class Coordinate : IEqualityComparer<Coordinate>
     {
         public int Column { get; set; }
         public int Row { get; set; }
@@ -22,11 +22,6 @@ namespace Battleships.Business.Models
         public int GetHashCode(Coordinate obj)
         {
             return new { obj.Column, obj.Row }.GetHashCode();
-        }
-
-        public bool Equals(Coordinate other)
-        {
-            return this.Column == other.Column && this.Row == other.Row;
         }
     }
 }
