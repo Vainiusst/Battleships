@@ -1,4 +1,5 @@
 ﻿using Battleships.Business.Models;
+using Battleships.Business.Models.GameModels;
 using Battleships.Business.Services;
 using Battleships.Presentation.Controls;
 using Battleships.Presentation.Services;
@@ -17,14 +18,19 @@ namespace Battleships.Presentation
     /// </summary>
     public partial class GameWindow : Window
     {
-        private TaskCompletionSource<Coordinate> ClickSomewhere { get; set; }
+        private TaskCompletionSource<Coordinate> CoordinateTask { get; set; }
+        private TaskCompletionSource<Move> MoveTask { get; set; }
         private Orientation ShipOrientation { get; set; }
         private Game CurrentGame { get; set; }
         public Player PlayerPC { get; set; }
         public Player PlayerHum { get; set; }
+        public List<Round> Rounds { get; set; }
         public GameWindow(User user)
         {
             InitializeComponent();
+
+            Rounds = new List<Round>();
+            MovesGrid.ItemsSource = Rounds;
 
             PlayerPC = new Player(new User(0, "Computer"));
             PlayerHum = new Player(user);
@@ -36,33 +42,53 @@ namespace Battleships.Presentation
             PopulateButtonsWithEH();
         }
 
-        public void InitiateGame()
+        public async void InitiateGame()
         {
             CurrentGame = new Game(PlayerHum, PlayerPC);
             var playerToStart = CoinToss.Toss();
 
-            if (playerToStart == 0)
+            if (playerToStart == CoinToss.Players.Player)
             {
                 MessageBox.Show($"{PlayerHum.Name} starts first!");
-                while (PlayerHum.Ships.Count > 0 || PlayerPC.Ships.Count > 0)
+                while (PlayerHum.Ships.Count > 0 && PlayerPC.Ships.Count > 0)
                 {
-                    AddInfoLabel.Content = $"Waiting for the {PlayerHum.Name}'s move.";
-                    var t = Task.Run(() => PlayersShot());
-                    t.Wait();
-                    CurrentGame.FullComputerMove(InfoLabel);
+                    await PlayerFirst();
                 }
             }
             else
             {
                 MessageBox.Show("Computer starts first!");
-                while (PlayerHum.Ships.Count > 0 || PlayerPC.Ships.Count > 0)
+                while (PlayerHum.Ships.Count > 0 && PlayerPC.Ships.Count > 0)
                 {
-                    CurrentGame.FullComputerMove(InfoLabel);
-                    AddInfoLabel.Content = $"Waiting for the {PlayerHum.Name}'s move.";
-                    var t = Task.Run(() => PlayersShot());
-                    t.Wait();
+                    await PCFirst();
                 }
             }
+        }
+
+        public async Task PCFirst()
+        {
+            var pcMove = CurrentGame.FullComputerMove(PCShotInfo);
+            Rounds.Add(new Round(null, pcMove));            
+            MovesGrid.Items.Refresh();
+            AddInfoLabel.Content = $"Waiting for the {PlayerHum.Name}'s move.";
+            var plrMove = await PlayersShot();
+            MoveTask = null;
+            Rounds.Last().PlayerMove = plrMove;
+            MovesGrid.Items.Refresh();
+            AddInfoLabel.Content = "";
+        }
+
+        public async Task PlayerFirst()
+        {
+            AddInfoLabel.Content = $"Waiting for the {PlayerHum.Name}'s move.";
+            var plrMove = await PlayersShot();
+            Rounds.Add(new Round(plrMove, null));
+            MovesGrid.Items.Refresh();
+            AddInfoLabel.Content = "";
+            var pcMove = CurrentGame.FullComputerMove(PCShotInfo);
+            MoveTask = null;
+            Rounds.Last().ComputerMove = pcMove;
+            MovesGrid.Items.Refresh();
         }
 
         private void PrepareComputerForGame(Player pc)
@@ -76,7 +102,7 @@ namespace Battleships.Presentation
             var sps = new ShipPlacementService(player.Grid.Height, player.Grid.Width);
             var bfs = new ButtonFillingService();
 
-            ClickSomewhere = new TaskCompletionSource<Coordinate>();
+            CoordinateTask = new TaskCompletionSource<Coordinate>();
 
             bool[] ShouldHaveContent = new bool[] { true, false };
 
@@ -91,21 +117,26 @@ namespace Battleships.Presentation
             while (p.Ships.Count > sps.OccupiedCoordinates.Count)
             {
                 var theShip = p.Ships[sps.OccupiedCoordinates.Count];
-                InfoLabel.Content = $"Setting the coordinates for ship of size {theShip.Size}";
+                PCShotInfo.Content = $"Setting the coordinates for ship of size {theShip.Size}";
                 Coordinate coordToUse = await UserClickedOnCoordinateBoard();
+                CoordinateTask = null;
                 sps.PlaceShip(ShipOrientation, coordToUse, theShip);
                 ColourTheShip(theShip.Placement);
             }
 
             PlayerButtonsPanel.Children.Clear();
-            InfoLabel.Content = null;
+            PCShotInfo.Content = null;
             GenerateStartButton();
         }
 
-        private async void PlayersShot()
+        private async Task<Move> PlayersShot()
         {
             var shootingCoord = await UserClickedOnCoordinateBoard();
-            CurrentGame.FullPlayerMove(shootingCoord, InfoLabel);
+            CoordinateTask = null;
+            MoveTask = new TaskCompletionSource<Move>();
+            var move = CurrentGame.FullPlayerMove(shootingCoord, PlayerShotInfo);
+            MoveTask.SetResult(move);
+            return MoveTask.Task.Result;
         }
 
         private void SetComputerShips(Player p, RandomShipPlacementService rsps)
@@ -119,18 +150,17 @@ namespace Battleships.Presentation
 
         public void SetShipClick(object sender, RoutedEventArgs args)
         {
-            if (ClickSomewhere != null)
+            if (CoordinateTask != null)
             {
                 ButtonExtended btn = (ButtonExtended)sender;
-                ClickSomewhere.SetResult(btn.Coordinate);
-                ClickSomewhere = null;
+                CoordinateTask.SetResult(btn.Coordinate);
             }
         }
 
         private async Task<Coordinate> UserClickedOnCoordinateBoard()
         {
-            ClickSomewhere = new TaskCompletionSource<Coordinate>();
-            return await ClickSomewhere.Task; //<--- Something happens here
+            CoordinateTask = new TaskCompletionSource<Coordinate>();
+            return await CoordinateTask.Task;
         }
 
         private void ColourTheShip(List<Coordinate> coords)
@@ -144,7 +174,7 @@ namespace Battleships.Presentation
 
             foreach (Coordinate coord in coords)
             {
-                var btn = btns.FirstOrDefault(b => b.Coordinate.Equals(coord, b.Coordinate));
+                var btn = btns.FirstOrDefault(b => b.Coordinate.Equals(coord));
 
                 btn.Opacity = 1;
                 btn.Background = Brushes.Gray;
@@ -174,7 +204,6 @@ namespace Battleships.Presentation
 
         private void btnStartGame_Click(object sender, RoutedEventArgs e)
         {
-            btnSubmitAction.IsEnabled = true;
             PlayerButtonsPanel.Children.Clear();
         }
 

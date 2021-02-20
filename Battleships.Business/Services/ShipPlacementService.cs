@@ -105,7 +105,7 @@ namespace Battleships.Business.Services
         {
             List<Coordinate> returnCoords = new List<Coordinate>();
 
-            if (!OccupiedCoordinates.Any(l => l.Any(c => c.Equals(coord, c))))
+            if (!OccupiedCoordinates.Any(l => l.Contains(coord)))
             {
                 returnCoords.Add(coord);
                 return returnCoords;

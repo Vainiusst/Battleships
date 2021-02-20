@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Battleships.Presentation"
         mc:Ignorable="d"
-        Title="Battleships" Height="500" Width="1000"
+        Title="Battleships" Height="520" Width="1000"
         Background="LightSkyBlue">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -100,8 +100,8 @@
                 <Button x:Name="btnHorizontal" Width="75" Margin="0 0 5 0" Click="btnHorizontal_Click" Background="Green">Horizontal</Button>
                 <Button x:Name="btnVertical" Width="75" Margin="5 0 0 0" Click="btnVertical_Click">Vertical</Button>
             </StackPanel>
-            <Label x:Name="InfoLabel" HorizontalAlignment="Center"></Label>
-            <Label x:Name="AddInfoLabel" HorizontalAlignment="Center"></Label>
+            <Label x:Name="PCShotInfo" Height="25" HorizontalAlignment="Center"></Label>
+            <Label x:Name="AddInfoLabel" Height="25" HorizontalAlignment="Center"></Label>
         </StackPanel>
         <StackPanel x:Name="PlayerGuessBox" Grid.Column="1" Grid.Row="1">
             <Label HorizontalAlignment="Center">Oponent's ships</Label>
@@ -181,14 +181,14 @@
                     </Grid.RowDefinitions>
                 </Grid>
             </StackPanel>
-            <Button x:Name="btnSubmitAction" x:FieldModifier="public" Width="120" FontSize="16" Margin="5" IsEnabled="False">Submit action</Button>
+            <Label x:Name="PlayerShotInfo" HorizontalAlignment="Center"></Label>
         </StackPanel>
         <StackPanel x:Name="GameStatsBox" Grid.Column="2" Grid.Row="1" Margin="0 0 10 0">
             <Label HorizontalAlignment="Center">Moves</Label>
-            <DataGrid>
+            <DataGrid x:Name="MovesGrid" MaxHeight="380" IsReadOnly="True" AutoGenerateColumns="False" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Player" Width="*"></DataGridTextColumn>
-                    <DataGridTextColumn Header="Computer" Width="*"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Player" Binding="{Binding PlayerMove.MoveStr}" Width="*"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Computer" Binding="{Binding ComputerMove.MoveStr}" Width="*"></DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </StackPanel>

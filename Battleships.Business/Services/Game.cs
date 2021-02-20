@@ -3,6 +3,7 @@ using Battleships.Business.Models.GameModels;
 using System;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Battleships.Business.Services
@@ -55,7 +56,6 @@ namespace Battleships.Business.Services
             return plr.Ships
                 .Where(s => !s.IsSunk)
                 .SelectMany(c => c.Placement)
-                .ToList()
                 .Contains(coordShotAt);
         }
 
@@ -82,7 +82,7 @@ namespace Battleships.Business.Services
                 outputString.Append("The shot missed.");
             }
 
-            lbl.Content = outputString.ToString();
+            Application.Current.Dispatcher.Invoke(() => lbl.Content = outputString.ToString());
         }
     }
 }
