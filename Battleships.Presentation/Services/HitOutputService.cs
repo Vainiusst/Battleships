@@ -24,6 +24,7 @@ namespace Battleships.Presentation.Services
 
             if (IsHit(opponent, mv.MoveCoord))
             {
+                mv.MoveStr += "x";
                 outputString.Append(ActionsAfterHit(plr, opponent, mv.MoveCoord));
                 GW.RemainingShipsLabel.Content = RemainingShips();
             }
