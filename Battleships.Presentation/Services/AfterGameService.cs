@@ -1,16 +1,12 @@
 ﻿using Battleships.Business.Models;
 using Battleships.Data.Database;
-using Battleships.Data.Models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace Battleships.Presentation.Services
 {
-    public class AfterGameService
+    public class AfterGameService : IAfterGameService
     {
         public Player PlayerHum { get; set; }
         public Player PlayerPC { get; set; }
@@ -35,7 +31,7 @@ namespace Battleships.Presentation.Services
 
         private Player PickTheWinner()
         {
-            var returnPlr =  PlayerPC.Ships.Any(s => !s.IsSunk) ? PlayerPC : PlayerHum;
+            var returnPlr = PlayerPC.Ships.Any(s => !s.IsSunk) ? PlayerPC : PlayerHum;
             MessageBox.Show($"{returnPlr.Name} won the game!");
             return returnPlr;
         }
@@ -55,7 +51,7 @@ namespace Battleships.Presentation.Services
         private void UpdateGameDB(GameWindow gw, MyDbContext ctx)
         {
             StringBuilder sb = new StringBuilder();
-            foreach(var round in gw.Rounds)
+            foreach (var round in gw.Rounds)
             {
                 sb.AppendLine($"Player: {round.PlayerMove.MoveStr}, Computer: {round.ComputerMove.MoveStr}.");
             }

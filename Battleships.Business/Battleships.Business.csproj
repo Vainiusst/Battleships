@@ -51,6 +51,8 @@
     <Compile Include="Models\GameModels\Move.cs" />
     <Compile Include="Services\CoordinateTranslationService.cs" />
     <Compile Include="Services\Game.cs" />
+    <Compile Include="Services\ICoordinateTranslationService.cs" />
+    <Compile Include="Services\IGame.cs" />
     <Compile Include="Services\IRandomShotService.cs" />
     <Compile Include="Services\RandomShotService.cs" />
     <Compile Include="Models\GameModels\Round.cs" />

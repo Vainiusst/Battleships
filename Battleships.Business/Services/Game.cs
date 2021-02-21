@@ -1,13 +1,10 @@
 ﻿using Battleships.Business.Models;
 using Battleships.Business.Models.GameModels;
 using System;
-using System.Linq;
-using System.Text;
-using System.Windows.Controls;
 
 namespace Battleships.Business.Services
 {
-    public class Game
+    public class Game : IGame
     {
         public Player Player { get; set; }
         public Player ComputerPlayer { get; set; }

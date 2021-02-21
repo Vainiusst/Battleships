@@ -1,6 +1,5 @@
 ﻿using Battleships.Business.Models;
 using Battleships.Business.Models.GameModels;
-using Battleships.Business.Services;
 using Battleships.Presentation.Controls;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +25,7 @@ namespace Battleships.Presentation.Services
             if (IsHit(opponent, mv.MoveCoord))
             {
                 outputString.Append(ActionsAfterHit(plr, opponent, mv.MoveCoord));
+                GW.RemainingShipsLabel.Content = RemainingShips();
             }
             else
             {
@@ -34,6 +34,12 @@ namespace Battleships.Presentation.Services
             }
 
             lbl.Text = outputString.ToString();
+        }
+
+        private string RemainingShips()
+        {
+            var PCShipsAfloat = GW.PlayerPC.Ships.Count(s => !s.IsSunk);
+            return $"{PCShipsAfloat} of the computer's ships are afloat.";
         }
 
         private string ActionsAfterHit(Player plr, Player opponent, Coordinate coord)

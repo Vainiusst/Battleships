@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Battleships.Business.Services
 {
-    public class CoordinateTranslationService
+    public class CoordinateTranslationService : ICoordinateTranslationService
     {
         private readonly Dictionary<int, string> coordToLetter = new Dictionary<int, string>
         {

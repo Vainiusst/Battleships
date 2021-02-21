@@ -127,10 +127,17 @@ namespace Battleships.Presentation
 
         public void SetShipClick(object sender, RoutedEventArgs args)
         {
-            if (CoordinateTask != null)
+            try
             {
-                ButtonExtended btn = (ButtonExtended)sender;
-                CoordinateTask.SetResult(btn.Coordinate);
+                if (CoordinateTask != null)
+                {
+                    ButtonExtended btn = (ButtonExtended)sender;
+                    CoordinateTask.SetResult(btn.Coordinate);
+                }
+            }
+            catch (InvalidOperationException)
+            {
+                MessageBox.Show("You cannot click here at the moment.");
             }
         }
 

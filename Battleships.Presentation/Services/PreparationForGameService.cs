@@ -101,18 +101,14 @@ namespace Battleships.Presentation.Services
         {
             var btn = new StartGameButton();
             btn.Click += btnStartGame_Click;
-            btn.Click += Launcher;
             GW.PlayerButtonsPanel.Children.Add(btn);
         }
 
         private void btnStartGame_Click(object sender, RoutedEventArgs e)
         {
             GW.PlayerButtonsPanel.Children.Clear();
-        }
-
-        private void Launcher(object sender, RoutedEventArgs e)
-        {
             GW.InitiateGame();
+            GW.RemainingShipsLabel.Content = "5 of the computer's ships are afloat.";
         }
     }
 }

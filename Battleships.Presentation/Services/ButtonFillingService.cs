@@ -1,7 +1,6 @@
 ﻿using Battleships.Business.Models;
 using Battleships.Business.Services;
 using Battleships.Presentation.Controls;
-using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
