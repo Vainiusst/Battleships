@@ -10,14 +10,12 @@ using System.Windows.Media;
 
 namespace Battleships.Presentation.Services
 {
-    public class HitOutputService
+    public class HitOutputService : IHitOutputService
     {
-        private Game Game { get; }
         private GameWindow GW { get; set; }
 
-        public HitOutputService(Game game, GameWindow gw)
+        public HitOutputService(GameWindow gw)
         {
-            Game = game;
             GW = gw;
         }
 

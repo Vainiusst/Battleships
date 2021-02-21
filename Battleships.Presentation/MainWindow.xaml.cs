@@ -17,6 +17,7 @@ namespace Battleships.Presentation
     {
         public User CurrentUser { get; set; }
         private List<User> Scores { get; set; }
+        public DbManager DbM { get; set; }
 
         public MainWindow()
         {
@@ -24,28 +25,14 @@ namespace Battleships.Presentation
 
             Scores = new List<User>();
             ScoreGrid.ItemsSource = Scores;
+
+            DbM = new DbManager();
         }
 
-        private void btnRegisterLogin_Click(object sender, RoutedEventArgs e)
+        private void RegisterUser()
         {
-            LoginPanel.Visibility = Visibility.Hidden;
-            RegisterPanel.Visibility = Visibility.Visible;
-        }
-
-        private void btnLoginReg_Click(object sender, RoutedEventArgs e)
-        {
-            RegisterPanel.Visibility = Visibility.Hidden;
-            LoginPanel.Visibility = Visibility.Visible;
-        }
-
-        private void btnLoginLogin_Click(object sender, RoutedEventArgs e)
-        {
-            btnLoginLogin.BorderBrush = (Brush)(new BrushConverter().ConvertFrom("#FF707070"));
-            var user = DbManager.LoginUser(tbLoginUsername.Text, tbLoginPassword.Password.ToString());
-            UponLogin(user);
-            ScoreGridInfoUpdate();
-            tbLoginPassword.Clear();
-            tbLoginUsername.Clear();
+            DbUser regUser = DbM.RegisterUser(tbRegUsername.Text, tbRegEmail.Text, tbRegPassword.Password.ToString());
+            UponRegistration(regUser);
         }
 
         private void UponLogin(DbUser user)
@@ -62,16 +49,6 @@ namespace Battleships.Presentation
                 btnLoginLogin.BorderBrush = Brushes.Red;
                 tbLoginInfo.Text = "No such user in the database!";
             }
-
-        }
-
-        private void btnRegRegister_Click(object sender, RoutedEventArgs e)
-        {
-            if (CheckInput()) RegisterUser();
-            ScoreGridInfoUpdate();
-            tbRegPassword.Clear();
-            tbRegUsername.Clear();
-            tbRegEmail.Clear();
         }
 
         private User CreateUser(DbUser user)
@@ -117,11 +94,6 @@ namespace Battleships.Presentation
             return true;
         }
 
-        private void RegisterUser()
-        {
-            DbUser regUser = DbManager.RegisterUser(tbRegUsername.Text, tbRegEmail.Text, tbRegPassword.Password.ToString());
-            UponRegistration(regUser);
-        }
 
         private void UponRegistration(DbUser user)
         {
@@ -139,8 +111,10 @@ namespace Battleships.Presentation
             }
         }
 
-        private void ScoreGridInfoUpdate()
+        public void ScoreGridInfoUpdate()
         {
+            if (Scores.Count > 0) Scores.Clear();
+
             using(var ctx = new MyDbContext())
             {
                 var scores = ctx.Scores.ToList();
@@ -155,6 +129,39 @@ namespace Battleships.Presentation
 
                 ScoreGrid.Items.Refresh();
             }
+        }
+
+
+        //Event handlers are down here
+        private void btnRegisterLogin_Click(object sender, RoutedEventArgs e)
+        {
+            LoginPanel.Visibility = Visibility.Hidden;
+            RegisterPanel.Visibility = Visibility.Visible;
+        }
+
+        private void btnLoginReg_Click(object sender, RoutedEventArgs e)
+        {
+            RegisterPanel.Visibility = Visibility.Hidden;
+            LoginPanel.Visibility = Visibility.Visible;
+        }
+
+        private void btnLoginLogin_Click(object sender, RoutedEventArgs e)
+        {
+            btnLoginLogin.BorderBrush = (Brush)(new BrushConverter().ConvertFrom("#FF707070"));
+            var user = DbM.LoginUser(tbLoginUsername.Text, tbLoginPassword.Password.ToString());
+            UponLogin(user);
+            ScoreGridInfoUpdate();
+            tbLoginPassword.Clear();
+            tbLoginUsername.Clear();
+        }
+
+        private void btnRegRegister_Click(object sender, RoutedEventArgs e)
+        {
+            if (CheckInput()) RegisterUser();
+            ScoreGridInfoUpdate();
+            tbRegPassword.Clear();
+            tbRegUsername.Clear();
+            tbRegEmail.Clear();
         }
 
         private void tb_TextChanged(object sender, TextChangedEventArgs e)
@@ -178,7 +185,7 @@ namespace Battleships.Presentation
 
         private void btnUserStartGame_Click(object sender, RoutedEventArgs e)
         {
-            var game = new GameWindow(CurrentUser);
+            var game = new GameWindow(CurrentUser, this);
             game.Show();
         }
     }

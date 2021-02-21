@@ -1,12 +1,14 @@
-﻿using Battleships.Data.Models;
+﻿using Battleships.Business.Models;
+using Battleships.Data.Models;
 using Battleships.Data.Services;
+using System;
 using System.Linq;
 
 namespace Battleships.Data.Database
 {
-    public static class DbManager
+    public class DbManager
     {
-        public static DbUser RegisterUser(string username, string email, string pass)
+        public DbUser RegisterUser(string username, string email, string pass)
         {
             PassHashingService phs = new PassHashingService();
 
@@ -29,7 +31,7 @@ namespace Battleships.Data.Database
             }
         }
 
-        public static DbUser LoginUser(string username, string password)
+        public DbUser LoginUser(string username, string password)
         {
             using (var ctx = new MyDbContext())
             {
@@ -45,7 +47,7 @@ namespace Battleships.Data.Database
             }
         }
 
-        private static bool CheckIfUserUnique(string username, string email, MyDbContext ctx)
+        private bool CheckIfUserUnique(string username, string email, MyDbContext ctx)
         {
             var usernames = ctx.Users.Select(u => u.Username).ToList();
             var emails = ctx.Users.Select(u => u.Email).ToList();
@@ -56,6 +58,28 @@ namespace Battleships.Data.Database
             }
 
             return false;
+        }
+
+        public void CreateGame(Player plr, MyDbContext ctx, string gameLog)
+        {
+            var user = ctx.Users.FirstOrDefault(u => u.UserId == plr.UserId);
+            var gameToAdd = new DbGame { User = user, GameTime = DateTime.Now, GameMoves = gameLog };
+            ctx.Games.Add(gameToAdd);
+            ctx.SaveChanges();
+        }
+
+        public void AddWin(Player plr, MyDbContext ctx)
+        {
+            var score = ctx.Scores.FirstOrDefault(s => s.UserId == plr.UserId);
+            score.Wins++;
+            ctx.SaveChanges();
+        }
+
+        public void AddLoss(Player plr, MyDbContext ctx)
+        {
+            var score = ctx.Scores.FirstOrDefault(s => s.UserId == plr.UserId);
+            score.Losses++;
+            ctx.SaveChanges();
         }
     }
 }

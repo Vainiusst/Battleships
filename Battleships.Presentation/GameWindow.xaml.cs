@@ -26,13 +26,14 @@ namespace Battleships.Presentation
         public Player PlayerPC { get; set; }
         public Player PlayerHum { get; set; }
         public List<Round> Rounds { get; set; }
+        public MainWindow MW { get; set; }
 
-
-        public GameWindow(User user)
+        public GameWindow(User user, MainWindow mw)
         {
             InitializeComponent();
 
             MoveTask = null;
+            MW = mw;
 
             Rounds = new List<Round>();
             MovesGrid.ItemsSource = Rounds;
@@ -47,7 +48,7 @@ namespace Battleships.Presentation
         public async void InitiateGame()
         {
             CurrentGame = new Game(PlayerHum, PlayerPC);
-            HOS = new HitOutputService(CurrentGame, this);
+            HOS = new HitOutputService(this);
             var playerToStart = CoinToss.Toss();
 
             if (playerToStart == CoinToss.Players.Player)
@@ -66,6 +67,11 @@ namespace Battleships.Presentation
                     await PCFirst();
                 }
             }
+
+            var ag = new AfterGameService(PlayerHum, PlayerPC);
+            ag.AfterGame(this);
+            MW.ScoreGridInfoUpdate();
+            this.Close();
         }
 
         public async Task PCFirst()

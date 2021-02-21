@@ -72,9 +72,11 @@
     <Compile Include="GameWindow.xaml.cs">
       <DependentUpon>GameWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Services\AfterGameService.cs" />
     <Compile Include="Services\ButtonFillingService.cs" />
     <Compile Include="Services\HitOutputService.cs" />
     <Compile Include="Services\IButtonFillingService.cs" />
+    <Compile Include="Services\IHitOutputService.cs" />
     <Compile Include="Services\IInputCheckingService.cs" />
     <Compile Include="Services\InputCheckingService.cs" />
     <Compile Include="Services\IPreparationForGameService.cs" />
