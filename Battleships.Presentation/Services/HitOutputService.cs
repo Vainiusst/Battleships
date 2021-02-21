@@ -9,6 +9,8 @@ using System.Windows.Media;
 
 namespace Battleships.Presentation.Services
 {
+    //Class that deals with vidsual outputs after the hit, such as colouring the buttons
+    //and changing information in the text blocks
     public class HitOutputService : IHitOutputService
     {
         private GameWindow GW { get; set; }
@@ -24,7 +26,7 @@ namespace Battleships.Presentation.Services
 
             if (IsHit(opponent, mv.MoveCoord))
             {
-                mv.MoveStr += "x";
+                mv.MoveStr += "x"; //Adds a letter 'x' to the moves that resulted in a hit for easier log readability
                 outputString.Append(ActionsAfterHit(plr, opponent, mv.MoveCoord));
                 GW.RemainingShipsLabel.Content = RemainingShips();
             }
@@ -55,6 +57,7 @@ namespace Battleships.Presentation.Services
             {
                 return "The shot hit a damaged part of the ship.";
             }
+
             ColourButtonRed(plr, coord);
             var str = $"The shot hit the ship of size {FindShipSize(opponent, coord)}.";
             if (!shipHit.HitsTaken.Contains(coord)) shipHit.HitsTaken.Add(coord);
@@ -64,7 +67,6 @@ namespace Battleships.Presentation.Services
 
         public bool IsHit(Player plr, Coordinate coordShotAt)
         {
-
             return plr.Ships
                 .SelectMany(c => c.Placement)
                 .Contains(coordShotAt);

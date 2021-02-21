@@ -12,6 +12,7 @@ namespace Battleships.Presentation
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
+    /// Controls and displays loging in, registering and main menu functions.
     /// </summary>
     public partial class MainWindow : Window
     {

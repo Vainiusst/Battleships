@@ -9,6 +9,7 @@ namespace Battleships.Business.Services
 {
     public class ShipPlacementService : IShipPlacementService
     {
+        //Class for placing ships on the grid. Involves Random placements for computer and manual placement for player.
         public List<List<Coordinate>> OccupiedCoordinates { get; set; }
         public int GridHeight { get; }
         public int GridWidth { get; }
@@ -58,8 +59,8 @@ namespace Battleships.Business.Services
                 for (int i = 0; i < ship.Size; i++)
                 {
                     Coordinate newCoord = new Coordinate(coord.Column + i, coord.Row);
-                    if (CoordinateValidator(newCoord).ToList().Count == 0) return;
-                    coords.AddRange(CoordinateValidator(newCoord).ToList());
+                    if (CoordinateValidator(newCoord) == null) return;
+                    coords.Add(newCoord);
                 }
             }
             else
@@ -67,8 +68,8 @@ namespace Battleships.Business.Services
                 for (int i = 0; i < ship.Size; i++)
                 {
                     Coordinate newCoord = new Coordinate(coord.Column - i, coord.Row);
-                    if (CoordinateValidator(newCoord).ToList().Count == 0) return;
-                    coords.AddRange(CoordinateValidator(newCoord).ToList());
+                    if (CoordinateValidator(newCoord) == null) return;
+                    coords.Add(newCoord);
                 }
             }
 
@@ -84,8 +85,8 @@ namespace Battleships.Business.Services
                 for (int i = 0; i < ship.Size; i++)
                 {
                     Coordinate newCoord = new Coordinate(coord.Column, coord.Row + i);
-                    if (CoordinateValidator(newCoord).ToList().Count == 0) return;
-                    coords.AddRange(CoordinateValidator(newCoord));
+                    if (CoordinateValidator(newCoord) == null) return;
+                    coords.Add(newCoord);
                 }
             }
             else
@@ -93,27 +94,24 @@ namespace Battleships.Business.Services
                 for (int i = 0; i < ship.Size; i++)
                 {
                     Coordinate newCoord = new Coordinate(coord.Column, coord.Row - i);
-                    if (CoordinateValidator(newCoord).ToList().Count == 0) return;
-                    coords.AddRange(CoordinateValidator(newCoord));
+                    if (CoordinateValidator(newCoord) == null) return;
+                    coords.Add(newCoord);
                 }
             }
 
             if (coords.Count == ship.Size) SetCoordinates(ship, coords);
         }
 
-        private IEnumerable<Coordinate> CoordinateValidator(Coordinate coord)
+        private Coordinate CoordinateValidator(Coordinate coord)
         {
-            List<Coordinate> returnCoords = new List<Coordinate>();
-
             if (!OccupiedCoordinates.Any(l => l.Contains(coord)))
             {
-                returnCoords.Add(coord);
-                return returnCoords;
+                return coord;
             }
             else
             {
                 MessageBox.Show("This coordinate choice is invalid!");
-                return returnCoords;
+                return null;
             }
         }
 

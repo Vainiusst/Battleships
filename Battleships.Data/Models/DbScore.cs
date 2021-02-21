@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Battleships.Data.Models
 {
+    //Table for storing users' scores
     public class DbScore
     {
         [Key]

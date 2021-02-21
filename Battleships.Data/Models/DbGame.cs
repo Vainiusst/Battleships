@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Battleships.Data.Models
 {
+    //Table for storing Game logs
     public class DbGame
     {
         [Key]

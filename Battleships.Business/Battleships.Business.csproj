@@ -66,7 +66,7 @@
     <Compile Include="Services\RandomShipPlacementService.cs" />
     <Compile Include="Services\ShipGeneratorService.cs" />
     <Compile Include="Services\ShipPlacementService.cs" />
-    <Compile Include="Services\TargetedShootingService.cs" />
+    <Compile Include="Services\ComputerShootingService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

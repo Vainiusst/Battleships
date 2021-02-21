@@ -7,6 +7,7 @@ using System.Windows.Controls;
 
 namespace Battleships.Business.Services
 {
+    //Class that places ships on the grid randomly. Used by the computer player.
     public class RandomShipPlacementService : IShipPlacementService
     {
         private Random Rand { get; set; }

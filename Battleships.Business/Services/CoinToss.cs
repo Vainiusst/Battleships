@@ -4,6 +4,7 @@ namespace Battleships.Business.Services
 {
     public static class CoinToss
     {
+        //Class to determine who starts the game
         public enum Players
         {
             Player,

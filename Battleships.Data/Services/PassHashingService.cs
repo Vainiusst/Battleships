@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 
 namespace Battleships.Data.Services
 {
+    //Class for hashing passwords
     public class PassHashingService : IPassHashingService
     {
         public string Salt()

@@ -2,6 +2,7 @@
 
 namespace Battleships.Data.Models
 {
+    //Table for storing users
     public class DbUser
     {
         [Key]

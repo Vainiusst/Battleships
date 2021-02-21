@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Battleships.Business.Services
 {
+    //Class that populates Player's SHip lists with default ship configurations.
     public static class ShipGeneratorService
     {
         public static IEnumerable<Ship> ShipGenerator(IEnumerable<int> ShipSizes)

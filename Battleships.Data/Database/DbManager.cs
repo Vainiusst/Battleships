@@ -6,6 +6,7 @@ using System.Linq;
 
 namespace Battleships.Data.Database
 {
+    //Class for various actions performed on the DB
     public class DbManager
     {
         public DbUser RegisterUser(string username, string email, string pass)
@@ -52,12 +53,7 @@ namespace Battleships.Data.Database
             var usernames = ctx.Users.Select(u => u.Username).ToList();
             var emails = ctx.Users.Select(u => u.Email).ToList();
 
-            if (!usernames.Contains(username) && !emails.Contains(email))
-            {
-                return true;
-            }
-
-            return false;
+            return !usernames.Contains(username) && !emails.Contains(email);
         }
 
         public void CreateGame(Player plr, MyDbContext ctx, string gameLog)

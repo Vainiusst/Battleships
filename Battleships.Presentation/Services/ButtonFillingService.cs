@@ -7,6 +7,7 @@ using System.Windows.Media;
 
 namespace Battleships.Presentation.Services
 {
+    //Class that fills grids with buttons that have required properties
     public class ButtonFillingService : IButtonFillingService
     {
         public void FillWithButtons(Grid grid, GameGrid gameGrid, bool addContent, RoutedEventHandler eh)

@@ -1,14 +1,11 @@
 ﻿using Battleships.Business.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Battleships.Business.Services
 {
     public class CoordinateTranslationService : ICoordinateTranslationService
     {
+        //Class to translate Coordinate class into more readable coordinates that are displayed on the grids
         private readonly Dictionary<int, string> coordToLetter = new Dictionary<int, string>
         {
             { 0, "A" },

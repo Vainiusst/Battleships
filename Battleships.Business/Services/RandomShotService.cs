@@ -1,12 +1,9 @@
 ﻿using Battleships.Business.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Battleships.Business.Services
 {
+    //Class that fires random shots. USed by the computer player. To be replaced by the ComputerShootingService in the future.
     public class RandomShotService : IRandomShotService
     {
         public Player Player { get; set; }

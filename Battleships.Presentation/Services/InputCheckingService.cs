@@ -4,12 +4,13 @@ using System.Text.RegularExpressions;
 
 namespace Battleships.Presentation.Services
 {
+    //Class that checks the input in the register forms
     public class InputCheckingService : IInputCheckingService
     {
         public bool UsernameCheck(string username)
         {
             //Username should be between 1-20 charcters long
-            //and may contain any alphanumeric characters, "-", "_" or ".".
+            //and may contain any alphanumeric characters as well as "-", "_" or ".".
             Regex rx = new Regex(@"^[\w\.\-]{1,20}$");
             return rx.IsMatch(username);
         }

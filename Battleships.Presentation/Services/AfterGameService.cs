@@ -6,6 +6,7 @@ using System.Windows;
 
 namespace Battleships.Presentation.Services
 {
+    //Class that combines actions to be performed after the game
     public class AfterGameService : IAfterGameService
     {
         public Player PlayerHum { get; set; }

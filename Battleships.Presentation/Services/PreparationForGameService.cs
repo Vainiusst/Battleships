@@ -11,6 +11,7 @@ using System.Windows.Media;
 
 namespace Battleships.Presentation.Services
 {
+    //Class that prepares the grids for the game
     public class PreparationForGameService : IPreparationForGameService
     {
         private ButtonFillingService BFS { get; set; }
@@ -34,6 +35,8 @@ namespace Battleships.Presentation.Services
 
         public void DistributeHandlers()
         {
+            //Swaps the handlers in the grids. This is necessary to insure that a particular grid
+            //could not be controlled by another grid.
             BFS.AddHandlerToButtons(GW.PlayerGuessBoxGrid.Children, GW.SetShipClick);
             BFS.RemoveHandlerFromButtons(GW.PlayerBoxGrid.Children, GW.SetShipClick);
         }
@@ -72,9 +75,11 @@ namespace Battleships.Presentation.Services
             while (p.Ships.Count > sps.OccupiedCoordinates.Count)
             {
                 var theShip = p.Ships[sps.OccupiedCoordinates.Count];
+
                 GW.PCShotInfo.Text = $"Setting the coordinates for ship of size {theShip.Size}";
                 Coordinate coordToUse = await GW.UserClickedOnCoordinateBoard();
                 CoordinateTask = null;
+
                 sps.PlaceShip(ShipOrientation, coordToUse, theShip);
                 ColourTheShip(theShip.Placement);
             }

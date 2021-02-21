@@ -15,6 +15,7 @@ namespace Battleships.Presentation
 {
     /// <summary>
     /// Interaction logic for GameWindow.xaml
+    /// Displays the game.
     /// </summary>
     public partial class GameWindow : Window
     {
@@ -33,6 +34,7 @@ namespace Battleships.Presentation
         {
             InitializeComponent();
 
+            CoordinateTask = null;
             MoveTask = null;
             MW = mw;
 
@@ -74,34 +76,49 @@ namespace Battleships.Presentation
             var ag = new AfterGameService(PlayerHum, PlayerPC);
             ag.AfterGame(this);
             MW.ScoreGridInfoUpdate();
+
             this.Close();
         }
 
         public async Task PCFirst()
         {
+            //Computer's part
             var pcMove = CurrentGame.ComputerMove();
+
             HOS.OutputTheHit(PCShotInfo, pcMove, PlayerPC, PlayerHum);
             Rounds.Add(new Round(null, pcMove));
             MovesGrid.Items.Refresh();
+
+            //Player's part
             AddInfoLabel.Content = $"Waiting for the {PlayerHum.Name}'s move.";
+
             var plrMove = await PlayersShot();
             MoveTask = null;
+
             HOS.OutputTheHit(PlayerShotInfo, plrMove, PlayerHum, PlayerPC);
             Rounds.Last().PlayerMove = plrMove;
+
             MovesGrid.Items.Refresh();
             AddInfoLabel.Content = "";
         }
 
         public async Task PlayerFirst()
         {
+            //Player's part
             AddInfoLabel.Content = $"Waiting for the {PlayerHum.Name}'s move.";
+
             var plrMove = await PlayersShot();
             MoveTask = null;
+
             HOS.OutputTheHit(PlayerShotInfo, plrMove, PlayerHum, PlayerPC);
             Rounds.Add(new Round(plrMove, null));
+
             MovesGrid.Items.Refresh();
             AddInfoLabel.Content = "";
+
+            //Computer's part
             var pcMove = CurrentGame.ComputerMove();
+
             HOS.OutputTheHit(PCShotInfo, pcMove, PlayerPC, PlayerHum);
             Rounds.Last().ComputerMove = pcMove;
             MovesGrid.Items.Refresh();
@@ -111,9 +128,11 @@ namespace Battleships.Presentation
         {
             var shootingCoord = await UserClickedOnCoordinateBoard();
             CoordinateTask = null;
+
             MoveTask = new TaskCompletionSource<Move>();
             var move = CurrentGame.PlayerMove(shootingCoord);
             MoveTask.SetResult(move);
+
             return MoveTask.Task.Result;
         }
 

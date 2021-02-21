@@ -9,6 +9,7 @@ namespace Battleships.Presentation
 {
     /// <summary>
     /// Interaction logic for GameLogWindow.xaml
+    /// Displays User's game logs.
     /// </summary>
     public partial class GameLogWindow : Window
     {
