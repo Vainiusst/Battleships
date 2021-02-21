@@ -16,6 +16,7 @@ namespace Battleships.Business.Services
         public Coordinate HitShot { get; }
         public List<Coordinate> PotentialShots { get; set; }
         public List<Coordinate> Hits { get; set; }
+        public int CurrentShipSize { get; set; }
         public Orientation Orientation { get; set; }
 
         public ComputerShootingService(Player computer, Player opponent, Coordinate hitShot)
@@ -26,9 +27,43 @@ namespace Battleships.Business.Services
             Hits = new List<Coordinate>();
         }
 
-        public Coordinate Shot()
+        //public Coordinate Shot()
+        //{
+        //    if (Hits.Count == 0 && PotentialShots.Count == 0)
+        //    {
+        //        return IsHit(RandomShot());
+        //    }
+        //    else if (Hits.Count == 1 && PotentialShots.Count == 0)
+        //    {
+        //        GeneratePotentials(Hits[0]);
+        //        var whereToShoot = PotentialShots[0];
+        //        return IsHit(whereToShoot);
+        //    }
+        //    else if (Hits.Count == 1 && PotentialShots.Count > 0)
+        //    {
+        //        PotentialShots.RemoveAt(0);
+        //        var whereToShoot = PotentialShots[0];
+        //        return IsHit(whereToShoot);
+        //    }
+        //    else if (Hits.Count > 1 && Hits.Count < CurrentShipSize && Orientation == null)
+        //    {
+        //        Orientation = CalculateOrientation(Hits);
+        //    }
+        //}
+
+        //private Coordinate ShootInDirection()
+        //{
+        //    //Implement directionality
+        //}
+
+        private Orientation CalculateOrientation(IEnumerable<Coordinate> coords)
         {
-            return IsHit(RandomShot());
+            if (coords.ToList()[0].Column != coords.ToList()[1].Column)
+            {
+                return Orientation.Horizontal;
+            }
+
+            return Orientation.Vertical;
         }
 
         private IEnumerable<Coordinate> GeneratePotentials(Coordinate hitShot)
@@ -48,12 +83,26 @@ namespace Battleships.Business.Services
         {
             if (Opponent.Ships.Where(s => s.IsSunk).SelectMany(s => s.Placement).Contains(coord))
             {
+                CurrentShipSize = FindShipSize(coord);
                 Hits.Add(coord);
                 return coord;
             }
             return coord;
         }
 
+        private int FindShipSize(Coordinate coord)
+        {
+            foreach(var ship in Opponent.Ships)
+            {
+                if (ship.Placement.Contains(coord)) return ship.Size;
+            }
+
+            return -1;
+        }
+
+
+
+        //Random shot mechanism
         private Coordinate RandomShot()
         {
             Coordinate shotToTake = RandomCoord();
