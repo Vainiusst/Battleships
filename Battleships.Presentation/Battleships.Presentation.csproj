@@ -69,6 +69,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Controls\StartGameButton.cs" />
+    <Compile Include="GameLogWindow.xaml.cs">
+      <DependentUpon>GameLogWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GameWindow.xaml.cs">
       <DependentUpon>GameWindow.xaml</DependentUpon>
     </Compile>
@@ -82,6 +85,10 @@
     <Compile Include="Services\InputCheckingService.cs" />
     <Compile Include="Services\IPreparationForGameService.cs" />
     <Compile Include="Services\PreparationForGameService.cs" />
+    <Page Include="GameLogWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="GameWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

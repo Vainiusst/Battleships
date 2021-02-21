@@ -51,9 +51,16 @@ namespace Battleships.Presentation.Services
         private void UpdateGameDB(GameWindow gw, MyDbContext ctx)
         {
             StringBuilder sb = new StringBuilder();
-            foreach (var round in gw.Rounds)
+            for(int i = 0; i < gw.Rounds.Count; i++)
             {
-                sb.AppendLine($"Player: {round.PlayerMove.MoveStr}, Computer: {round.ComputerMove.MoveStr}.");
+                if (i == gw.Rounds.Count - 1)
+                {
+                    sb.Append($"Player: {gw.Rounds[i].PlayerMove.MoveStr}, Computer: {gw.Rounds[i].ComputerMove.MoveStr}.");
+                }
+                else
+                {
+                    sb.Append($"Player: {gw.Rounds[i].PlayerMove.MoveStr}, Computer: {gw.Rounds[i].ComputerMove.MoveStr}; ");
+                }
             }
 
             DbM.CreateGame(PlayerHum, ctx, sb.ToString());

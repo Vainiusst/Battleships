@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Battleships.Presentation"
         mc:Ignorable="d"
-        Title="Battleships" Height="450" Width="300"
+        Title="Battleships" Height="490" Width="300"
         Background="LightSkyBlue">
     <Grid>
         <StackPanel x:Name="LoginPanel" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Visible">
@@ -52,6 +52,7 @@
                 </DataGrid.Columns>
             </DataGrid>
             <Button x:Name="btnUserStartGame" Margin="20" FontSize="30" Height="50" Background="LimeGreen" Click="btnUserStartGame_Click">Start game!</Button>
+            <Button x:Name="btnViewPastGames" Width="150" FontSize="15" Click="btnViewPastGames_Click">View past games</Button>
         </StackPanel>
     </Grid>
 </Window>

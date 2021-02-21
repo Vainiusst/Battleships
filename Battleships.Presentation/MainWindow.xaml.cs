@@ -188,5 +188,11 @@ namespace Battleships.Presentation
             var game = new GameWindow(CurrentUser, this);
             game.Show();
         }
+
+        private void btnViewPastGames_Click(object sender, RoutedEventArgs e)
+        {
+            var pastGames = new GameLogWindow(CurrentUser);
+            pastGames.Show();
+        }
     }
 }
