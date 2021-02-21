@@ -30,7 +30,12 @@ namespace Battleships.Presentation.Services
         {
             PrepareComputerForGame(GW.PlayerPC);
             PreparePlayerForGame(GW.PlayerHum);
-            BFS.AddHandlerAndEnableButtons(GW.PlayerGuessBoxGrid.Children, GW.SetShipClick);
+        }
+
+        public void DistributeHandlers()
+        {
+            BFS.AddHandlerToButtons(GW.PlayerGuessBoxGrid.Children, GW.SetShipClick);
+            BFS.RemoveHandlerFromButtons(GW.PlayerBoxGrid.Children, GW.SetShipClick);
         }
 
         private void PrepareComputerForGame(Player pc)

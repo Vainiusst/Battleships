@@ -63,6 +63,7 @@ namespace Battleships.Presentation.Services
 
         public bool IsHit(Player plr, Coordinate coordShotAt)
         {
+
             return plr.Ships
                 .SelectMany(c => c.Placement)
                 .Contains(coordShotAt);
@@ -75,6 +76,7 @@ namespace Battleships.Presentation.Services
             {
                 if (list.Contains(coord)) return list.Count;
             }
+
             return -1;
         }
 
@@ -85,6 +87,7 @@ namespace Battleships.Presentation.Services
                 FindBtn(coord, GW.PlayerBoxGrid.Children).Background = Brushes.Blue;
                 return;
             }
+
             FindBtn(coord, GW.PlayerGuessBoxGrid.Children).Background = Brushes.Blue;
         }
 
@@ -95,12 +98,14 @@ namespace Battleships.Presentation.Services
                 FindBtn(coord, GW.PlayerBoxGrid.Children).Background = Brushes.Red;
                 return;
             }
+
             FindBtn(coord, GW.PlayerGuessBoxGrid.Children).Background = Brushes.Red;
         }
 
         private ButtonExtended FindBtn(Coordinate coord, UIElementCollection gridChildren)
         {
             List<ButtonExtended> btns = new List<ButtonExtended>();
+
             foreach (var btn in gridChildren)
             {
                 btns.Add((ButtonExtended)btn);

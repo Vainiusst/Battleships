@@ -28,6 +28,7 @@ namespace Battleships.Presentation
         public List<Round> Rounds { get; set; }
         public MainWindow MW { get; set; }
 
+
         public GameWindow(User user, MainWindow mw)
         {
             InitializeComponent();
@@ -49,6 +50,8 @@ namespace Battleships.Presentation
         {
             CurrentGame = new Game(PlayerHum, PlayerPC);
             HOS = new HitOutputService(this);
+            PFGS.DistributeHandlers();
+
             var playerToStart = CoinToss.Toss();
 
             if (playerToStart == CoinToss.Players.Player)
