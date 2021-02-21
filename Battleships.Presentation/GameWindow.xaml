@@ -100,7 +100,7 @@
                 <Button x:Name="btnHorizontal" Width="75" Margin="0 0 5 0" Click="btnHorizontal_Click" Background="Green">Horizontal</Button>
                 <Button x:Name="btnVertical" Width="75" Margin="5 0 0 0" Click="btnVertical_Click">Vertical</Button>
             </StackPanel>
-            <TextBlock x:Name="PCShotInfo" HorizontalAlignment="Center" TextWrapping="Wrap"></TextBlock>
+            <TextBlock x:Name="PCShotInfo" MaxWidth="320" TextAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap"></TextBlock>
             <Label x:Name="AddInfoLabel" Height="25" HorizontalAlignment="Center"></Label>
         </StackPanel>
         <StackPanel x:Name="PlayerGuessBox" Grid.Column="1" Grid.Row="1">
@@ -181,7 +181,7 @@
                     </Grid.RowDefinitions>
                 </Grid>
             </StackPanel>
-            <TextBlock x:Name="PlayerShotInfo" HorizontalAlignment="Center" TextWrapping="Wrap"></TextBlock>
+            <TextBlock x:Name="PlayerShotInfo" MaxWidth="320" TextAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap"></TextBlock>
         </StackPanel>
         <StackPanel x:Name="GameStatsBox" Grid.Column="2" Grid.Row="1" Margin="0 0 10 0">
             <Label HorizontalAlignment="Center">Moves</Label>

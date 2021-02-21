@@ -27,31 +27,44 @@ namespace Battleships.Presentation.Services
 
             if (IsHit(opponent, mv.MoveCoord))
             {
-                var shipHit = opponent.Ships.FirstOrDefault(s => s.Placement.Contains(mv.MoveCoord));
-                outputString.Append($"The shot hit the ship of size {FindShipSize(opponent, mv.MoveCoord)}.");
-                ColourButton(plr, mv.MoveCoord);
-                shipHit.HitsTaken++;
-                if (shipHit.IsSunk) outputString.Append(" The ship has sunk.");
+                outputString.Append(ActionsAfterHit(plr, opponent, mv.MoveCoord));
             }
             else
             {
-                ColourButton(plr, mv.MoveCoord);
+                ColourButtonBlue(plr, mv.MoveCoord);
                 outputString.Append("The shot missed.");
             }
 
             lbl.Text = outputString.ToString();
         }
 
+        private string ActionsAfterHit(Player plr, Player opponent, Coordinate coord)
+        {
+            var shipHit = opponent.Ships.FirstOrDefault(s => s.Placement.Contains(coord));
+
+            if (shipHit.IsSunk)
+            {
+                return "The shot hit sunken ship.";
+            }
+            else if (shipHit.HitsTaken.Contains(coord))
+            {
+                return "The shot hit a damaged part of the ship.";
+            }
+            ColourButtonRed(plr, coord);
+            var str = $"The shot hit the ship of size {FindShipSize(opponent, coord)}.";
+            if (!shipHit.HitsTaken.Contains(coord)) shipHit.HitsTaken.Add(coord);
+            if (shipHit.IsSunk) str = $"{str} The ship has sunk.";
+            return str;
+        }
 
         public bool IsHit(Player plr, Coordinate coordShotAt)
         {
             return plr.Ships
-                .Where(s => !s.IsSunk)
                 .SelectMany(c => c.Placement)
                 .Contains(coordShotAt);
         }
 
-        public int FindShipSize(Player plr, Coordinate coord)
+        private int FindShipSize(Player plr, Coordinate coord)
         {
             var shipList = plr.Ships.Select(s => s.Placement).ToList();
             foreach (var list in shipList)
@@ -61,25 +74,24 @@ namespace Battleships.Presentation.Services
             return -1;
         }
 
-
-        public void ColourButton(Player plr, Coordinate coord)
+        private void ColourButtonBlue(Player plr, Coordinate coord)
         {
             if (plr.Name == "Computer")
             {
-                if (IsHit(Game.Player, coord))
-                {
-                    FindBtn(coord, GW.PlayerBoxGrid.Children).Background = Brushes.Red;
-                    return;
-                }
                 FindBtn(coord, GW.PlayerBoxGrid.Children).Background = Brushes.Blue;
                 return;
             }
-            if (IsHit(Game.ComputerPlayer, coord))
+            FindBtn(coord, GW.PlayerGuessBoxGrid.Children).Background = Brushes.Blue;
+        }
+
+        private void ColourButtonRed(Player plr, Coordinate coord)
+        {
+            if (plr.Name == "Computer")
             {
-                FindBtn(coord, GW.PlayerGuessBoxGrid.Children).Background = Brushes.Red;
+                FindBtn(coord, GW.PlayerBoxGrid.Children).Background = Brushes.Red;
                 return;
             }
-            FindBtn(coord, GW.PlayerGuessBoxGrid.Children).Background = Brushes.Blue;
+            FindBtn(coord, GW.PlayerGuessBoxGrid.Children).Background = Brushes.Red;
         }
 
         private ButtonExtended FindBtn(Coordinate coord, UIElementCollection gridChildren)

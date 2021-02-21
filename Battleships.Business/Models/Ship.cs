@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Battleships.Business.Models
 {
     public class Ship
     {
         public int Size { get; }
-        public int HitsTaken { get; set; }
-        public bool IsSunk => HitsTaken >= Size;
+        public List<Coordinate> HitsTaken { get; set; }
+        public bool IsSunk => HitsTaken.Count >= Size;
         public List<Coordinate> Placement { get; set; }
 
         public Ship(int size)
         {
             Size = size;
-            HitsTaken = 0;
+            HitsTaken = new List<Coordinate>();
             Placement = new List<Coordinate>();
         }
     }
