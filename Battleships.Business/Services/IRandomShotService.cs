@@ -5,7 +5,7 @@ namespace Battleships.Business.Services
 {
     public interface IRandomShotService
     {
-        Player Player { get; }
+        Player Computer { get; set; }
         Random Rand { get; set; }
 
         Coordinate Shoot();

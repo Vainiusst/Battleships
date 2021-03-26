@@ -48,7 +48,7 @@ namespace Battleships.Presentation
             PFGS.Prepare();
         }
 
-        public async void InitiateGame()
+        public async Task InitiateGame()
         {
             CurrentGame = new Game(PlayerHum, PlayerPC);
             HOS = new HitOutputService(this);

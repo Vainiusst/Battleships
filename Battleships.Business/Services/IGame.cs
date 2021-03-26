@@ -8,7 +8,7 @@ namespace Battleships.Business.Services
         Player ComputerPlayer { get; set; }
         CoordinateTranslationService CTS { get; set; }
         Player Player { get; set; }
-        RandomShotService RSS { get; set; }
+        IRandomShotService RSS { get; set; }
 
         Move ComputerMove();
         Move PlayerMove(Coordinate shootingCoord);

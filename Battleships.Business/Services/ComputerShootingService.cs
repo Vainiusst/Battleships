@@ -6,87 +6,102 @@ using System.Windows.Controls;
 
 namespace Battleships.Business.Services
 {
-    public class ComputerShootingService
+    public class ComputerShootingService : IRandomShotService
     {
         //This is not implemented yet. After it is completed, this should replace RandomShotService
         //As this should be more advanced and use calculations for targeted shots instead of pure random ones.
         public Player Computer { get; set; }
         public Player Opponent { get; set; }
         public Random Rand { get; set; }
-        public Coordinate HitShot { get; }
         public List<Coordinate> PotentialShots { get; set; }
-        public List<Coordinate> Hits { get; set; }
-        public int CurrentShipSize { get; set; }
+        public List<Coordinate> CurrentHits { get; set; }
         public Orientation Orientation { get; set; }
 
-        public ComputerShootingService(Player computer, Player opponent, Coordinate hitShot)
+
+        public ComputerShootingService(Player computer, Player opponent)
         {
             Computer = computer;
             Opponent = opponent;
             Rand = new Random();
-            Hits = new List<Coordinate>();
+            CurrentHits = new List<Coordinate>();
+            PotentialShots = new List<Coordinate>();
         }
 
-        //public Coordinate Shot()
-        //{
-        //    if (Hits.Count == 0 && PotentialShots.Count == 0)
-        //    {
-        //        return IsHit(RandomShot());
-        //    }
-        //    else if (Hits.Count == 1 && PotentialShots.Count == 0)
-        //    {
-        //        GeneratePotentials(Hits[0]);
-        //        var whereToShoot = PotentialShots[0];
-        //        return IsHit(whereToShoot);
-        //    }
-        //    else if (Hits.Count == 1 && PotentialShots.Count > 0)
-        //    {
-        //        PotentialShots.RemoveAt(0);
-        //        var whereToShoot = PotentialShots[0];
-        //        return IsHit(whereToShoot);
-        //    }
-        //    else if (Hits.Count > 1 && Hits.Count < CurrentShipSize && Orientation == null)
-        //    {
-        //        Orientation = CalculateOrientation(Hits);
-        //    }
-        //}
+        public Coordinate Shoot()
+        {
+            if (PotentialShots.Count == 0)
+            {
+                return IfHit(RandomShot());
+            }
+            else
+            {
+                var shot = IfHit(PotentialShots[0]);
+                PotentialShots.RemoveAt(0);
+                IfFatal(shot);
+                return shot;
+            }
+        }
+
+        private void IfFatal(Coordinate coord)
+        {
+            var shipSize = FindShipSize(coord);
+            if (CurrentHits.Count == shipSize) ClearCurrentAndPotentials();
+        }
+
+        private void ClearCurrentAndPotentials()
+        {
+            CurrentHits.Clear();
+            PotentialShots.Clear();
+        }
 
         //private Coordinate ShootInDirection()
         //{
         //    //Implement directionality
         //}
 
-        private Orientation CalculateOrientation(IEnumerable<Coordinate> coords)
-        {
-            if (coords.ToList()[0].Column != coords.ToList()[1].Column)
-            {
-                return Orientation.Horizontal;
-            }
+        //private Orientation CalculateOrientation(IEnumerable<Coordinate> coords)
+        //{
+        //    if (coords.ToList()[0].Column != coords.ToList()[1].Column)
+        //    {
+        //        return Orientation.Horizontal;
+        //    }
 
-            return Orientation.Vertical;
-        }
+        //    return Orientation.Vertical;
+        //}
 
-        private IEnumerable<Coordinate> GeneratePotentials(Coordinate hitShot)
+        private void GeneratePotentials(Coordinate hitShot)
         {
-            List<Coordinate> potentials = new List<Coordinate>();
+            PotentialShots = new List<Coordinate>();
 
             //Potential next shots can go 4 ways: up, down, left and right.
-            potentials.Add(new Coordinate(hitShot.Column, hitShot.Row - 1));
-            potentials.Add(new Coordinate(hitShot.Column, hitShot.Row + 1));
-            potentials.Add(new Coordinate(hitShot.Column - 1, hitShot.Row));
-            potentials.Add(new Coordinate(hitShot.Column + 1, hitShot.Row));
+            PotentialShots.Add(new Coordinate(hitShot.Column, hitShot.Row - 1));
+            PotentialShots.Add(new Coordinate(hitShot.Column, hitShot.Row + 1));
+            PotentialShots.Add(new Coordinate(hitShot.Column - 1, hitShot.Row));
+            PotentialShots.Add(new Coordinate(hitShot.Column + 1, hitShot.Row));
 
-            return potentials;
+            RemoveMadeShots();
         }
 
-        private Coordinate IsHit(Coordinate coord)
+        private void RemoveMadeShots()
         {
-            if (Opponent.Ships.Where(s => s.IsSunk).SelectMany(s => s.Placement).Contains(coord))
+            foreach(Coordinate shot in Computer.ShotsTaken)
             {
-                CurrentShipSize = FindShipSize(coord);
-                Hits.Add(coord);
-                return coord;
+                if (PotentialShots.Contains(shot)) PotentialShots.Remove(shot);
             }
+        }
+
+        private Coordinate IfHit(Coordinate coord)
+        {
+            if (Opponent.Ships.Where(s => !s.IsSunk).SelectMany(s => s.Placement).Contains(coord))
+            {
+                CurrentHits.Add(coord);
+                GeneratePotentials(coord);
+            }
+            else
+            {
+                ClearCurrentAndPotentials();
+            }
+
             return coord;
         }
 

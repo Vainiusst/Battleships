@@ -9,14 +9,15 @@ namespace Battleships.Business.Services
         public Player Player { get; set; }
         public Player ComputerPlayer { get; set; }
         public CoordinateTranslationService CTS { get; set; }
-        public RandomShotService RSS { get; set; }
+        public IRandomShotService RSS { get; set; }
 
         public Game(Player player, Player computerPlayer)
         {
             Player = player;
             ComputerPlayer = computerPlayer;
             CTS = new CoordinateTranslationService();
-            RSS = new RandomShotService(ComputerPlayer, new Random());
+            //RSS = new RandomShotService(ComputerPlayer, new Random());
+            RSS = new ComputerShootingService(computerPlayer, player);
         }
 
         public Move PlayerMove(Coordinate shootingCoord)

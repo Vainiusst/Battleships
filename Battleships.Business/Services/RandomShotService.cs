@@ -6,12 +6,12 @@ namespace Battleships.Business.Services
     //Class that fires random shots. USed by the computer player. To be replaced by the ComputerShootingService in the future.
     public class RandomShotService : IRandomShotService
     {
-        public Player Player { get; set; }
+        public Player Computer { get; set; }
         public Random Rand { get; set; }
 
-        public RandomShotService(Player player, Random rand)
+        public RandomShotService(Player computer, Random rand)
         {
-            Player = player;
+            Computer = computer;
             Rand = rand;
         }
 
@@ -19,9 +19,9 @@ namespace Battleships.Business.Services
         {
             Coordinate shotToTake = RandomCoord();
 
-            if (!Player.ShotsTaken.Contains(shotToTake))
+            if (!Computer.ShotsTaken.Contains(shotToTake))
             {
-                Player.ShotsTaken.Add(shotToTake);
+                Computer.ShotsTaken.Add(shotToTake);
                 return shotToTake;
             }
             else
@@ -32,8 +32,8 @@ namespace Battleships.Business.Services
 
         private Coordinate RandomCoord()
         {
-            int maxColumn = Player.Grid.Width;
-            int maxRow = Player.Grid.Height;
+            int maxColumn = Computer.Grid.Width;
+            int maxRow = Computer.Grid.Height;
 
             return new Coordinate(Rand.Next(maxColumn), Rand.Next(maxRow));
         }
