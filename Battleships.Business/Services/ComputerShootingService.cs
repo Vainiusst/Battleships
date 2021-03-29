@@ -34,50 +34,30 @@ namespace Battleships.Business.Services
             {
                 return IfHit(RandomShot());
             }
-            else if (PotentialShots.Count > 0 && CurrentHits.Count == 1)
+
+            var shot = PotentialShots[Rand.Next(PotentialShots.Count)];
+
+            if (PotentialShots.Count > 0 && CurrentHits.Count == 1)
             {
-                var shot = PotentialShots[Rand.Next(PotentialShots.Count)];
                 IfHit(AimedShot(shot));
                 if (CurrentHits.Count == 2)
                 {
                     CurrentOrientation = CalculateOrientation();
                     PotentialShots.Clear();
-                    //RemoveBadPotentials();
-                    GenerateDirectionPotentials(shot);
+                    GenerateDirectionPotentials();
                 }
-                PotentialShots.Remove(shot);
-                if (CurrentHits.Count == CurrentShipSize) ClearCurrentAndPotentials();
-                return shot;
+                return PostShotRoutine(shot);
             }
-            else
-            {
-                var shot = PotentialShots[Rand.Next(PotentialShots.Count)];
-                IfHitAfter2Hits(AimedShot(shot));
-                PotentialShots.Remove(shot);
-                if (CurrentHits.Count == CurrentShipSize) ClearCurrentAndPotentials();
-                return shot;
-            }
+
+            IfHitAfter2Hits(AimedShot(shot));
+            return PostShotRoutine(shot);
         }
 
-        private void RemoveBadPotentials()
+        private Coordinate PostShotRoutine(Coordinate shot)
         {
-            RemoveMadeShots();
-
-            if (CurrentOrientation == Orientation.Horizontal)
-            {
-                foreach (Coordinate coord in PotentialShots)
-                {
-                    //Might be a problem here, beacuse I modify the list while iterating through it
-                    if (coord.Row != CurrentHits[0].Row) PotentialShots.Remove(coord);
-                }
-            }
-            else
-            {
-                foreach (Coordinate coord in PotentialShots)
-                {
-                    if (coord.Column != CurrentHits[0].Column) PotentialShots.Remove(coord);
-                }
-            }
+            PotentialShots.Remove(shot);
+            if (CurrentHits.Count == CurrentShipSize) ClearCurrentAndPotentials();
+            return shot;
         }
 
         private void ClearCurrentAndPotentials()
@@ -96,20 +76,23 @@ namespace Battleships.Business.Services
             return Orientation.Vertical;
         }
 
-        private void GenerateDirectionPotentials(Coordinate coord)
+        private void GenerateDirectionPotentials()
         {
             //Once the direction is set we can generate potential shots based on the direction
             if (CurrentOrientation == Orientation.Horizontal)
             {
-                PotentialShots.Add(new Coordinate(coord.Column + 1, coord.Row));
-                PotentialShots.Add(new Coordinate(coord.Column - 1, coord.Row));
+                var columns = CurrentHits.Select(c => c.Column).ToList();
+                PotentialShots.Add(new Coordinate(columns.Max() + 1, CurrentHits[0].Row));
+                PotentialShots.Add(new Coordinate(columns.Min() - 1, CurrentHits[0].Row));
             }
             else
             {
-                PotentialShots.Add(new Coordinate(coord.Column, coord.Row + 1));
-                PotentialShots.Add(new Coordinate(coord.Column, coord.Row - 1));
+                var rows = CurrentHits.Select(c => c.Row).ToList();
+                PotentialShots.Add(new Coordinate(CurrentHits[0].Column, rows.Max() + 1));
+                PotentialShots.Add(new Coordinate(CurrentHits[0].Column, rows.Min() - 1));
             }
 
+            RemoveBadCoords();
             RemoveMadeShots();
         }
 
@@ -121,7 +104,19 @@ namespace Battleships.Business.Services
             PotentialShots.Add(new Coordinate(hitShot.Column - 1, hitShot.Row));
             PotentialShots.Add(new Coordinate(hitShot.Column + 1, hitShot.Row));
 
+            RemoveBadCoords();
             RemoveMadeShots();
+        }
+
+        private void RemoveBadCoords()
+        {
+            for(int i = 0; i < PotentialShots.Count; i++)
+            {
+                if (PotentialShots[i].Column > 9 ||
+                    PotentialShots[i].Column < 0 ||
+                    PotentialShots[i].Row > 9 ||
+                    PotentialShots[i].Row < 0) PotentialShots.Remove(PotentialShots[i]);
+            }
         }
 
         private void RemoveMadeShots()
@@ -149,7 +144,7 @@ namespace Battleships.Business.Services
             if (Opponent.Ships.Where(s => !s.IsSunk).SelectMany(s => s.Placement).Contains(coord))
             {
                 CurrentHits.Add(coord);
-                GenerateDirectionPotentials(coord);
+                GenerateDirectionPotentials();
                 CurrentShipSize = FindShipSize(coord);
             }
         }
@@ -183,10 +178,8 @@ namespace Battleships.Business.Services
                 Computer.ShotsTaken.Add(shotToTake);
                 return shotToTake;
             }
-            else
-            {
-                return RandomShot();
-            }
+
+            return RandomShot();
         }
 
         private Coordinate RandomCoord()
