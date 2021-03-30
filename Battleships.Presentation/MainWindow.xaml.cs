@@ -7,6 +7,7 @@ using Battleships.Presentation.Services;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace Battleships.Presentation
 {
@@ -194,6 +195,20 @@ namespace Battleships.Presentation
         {
             var pastGames = new GameLogWindow(CurrentUser);
             pastGames.Show();
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key != Key.Enter) return;
+
+            if(LoginPanel.Visibility == Visibility.Visible)
+            {
+                btnLoginLogin_Click(sender, new RoutedEventArgs());
+            }
+            if(RegisterPanel.Visibility == Visibility.Visible)
+            {
+                btnRegRegister_Click(sender, new RoutedEventArgs());
+            }
         }
     }
 }

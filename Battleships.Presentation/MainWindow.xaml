@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Battleships.Presentation"
         mc:Ignorable="d"
         Title="Battleships" Height="490" Width="300"
-        Background="LightSkyBlue">
+        Background="LightSkyBlue" KeyDown="Window_KeyDown">
     <Grid>
         <StackPanel x:Name="LoginPanel" VerticalAlignment="Center" HorizontalAlignment="Center" Visibility="Visible">
             <StackPanel>
@@ -48,7 +48,7 @@
                     <DataGridTextColumn Header="User" Binding="{Binding Name}" Width="*"></DataGridTextColumn>
                     <DataGridTextColumn Header="Wins" Binding="{Binding Wins}" Width="*"></DataGridTextColumn>
                     <DataGridTextColumn Header="Losses" Binding="{Binding Losses}" Width="*"></DataGridTextColumn>
-                    <DataGridTextColumn Header="Rank" Binding="{Binding Rank}" Width="*"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Rank" Binding="{Binding Rank}" Width="*" SortDirection="Descending"></DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
             <Button x:Name="btnUserStartGame" Margin="20" FontSize="30" Height="50" Background="LimeGreen" Click="btnUserStartGame_Click">Start game!</Button>
